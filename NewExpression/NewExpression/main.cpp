@@ -33,13 +33,11 @@ int main()
     new(p3) A;
     cout << p3->a;
 
-
-
     // function to call if new cannot allocate the memory
     std::set_new_handler( noMemory );
     // nothrow param - making new noexcept
     // On bad_alloc  - returns 0
-    int *a = new(std::nothrow) int[ 0x7FFFFFFF ]; // try to allocate 8GB memory
+    int *a = new(std::nothrow) int[ 0x7FFFFFFF ]; // try to allocate 2GB memory
     if( !a )
     {
         std::cout << "Cannot allocate 2Gb\n"; // Its impossible to allocate the memory
