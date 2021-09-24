@@ -1,8 +1,12 @@
+#include "Algorithms.h"
+
 #include <bits/stdc++.h>
-
 using namespace std;
-typedef long long ll;
 
+namespace Algorithm
+{
+
+// Binary Power O(log n)
 // x = a^pw (mod mod)
 ll bin_pow(ll a, ll pw, ll mod )
 {
@@ -17,7 +21,8 @@ ll bin_pow(ll a, ll pw, ll mod )
     return res;
 }
 
-// a^x = b (mod mod)
+// Discrete logarithm. Baby-step giant-step
+// Find x if a^x = b (mod mod) mod is prime
 ll disc_log(ll a, ll b, ll mod)
 {
     // x = np - q
@@ -47,22 +52,4 @@ ll disc_log(ll a, ll b, ll mod)
     return n*p-q;
 }
 
-int main()
-{
-    return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+} // namespace Algorithm
