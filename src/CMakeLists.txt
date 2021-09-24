@@ -6,6 +6,7 @@ set(LIBS
     Algorithms
     Structures::Any
     Structures::BoolVector
+    Structures::SharedPointer
 )
 
 add_executable(${PROJECT_NAME} ${SRC})
