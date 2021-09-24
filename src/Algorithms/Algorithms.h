@@ -1,8 +1,7 @@
 #pragma once
 typedef long long ll;
 
-namespace Algorithm
-{
+namespace Algorithm {
 
 // Binary Power O(log n)
 // x = a^pw (mod mod)
