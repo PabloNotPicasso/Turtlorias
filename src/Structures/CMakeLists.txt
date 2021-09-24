@@ -1,5 +1,5 @@
 set(PACKAGE Structures)
 
-add_subdirectory(Any)
-add_subdirectory(BoolVector)
-add_subdirectory(SharedPointer)
+build_library(Any)
+build_library(BoolVector)
+build_library(SharedPointer)

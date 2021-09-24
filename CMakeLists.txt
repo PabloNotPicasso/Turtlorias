@@ -6,6 +6,7 @@ project(cpp-tricks)
 
 include(SetUp)
 include(CodeFormatting)
+include(Macro)
 
 add_subdirectory(src)
 
