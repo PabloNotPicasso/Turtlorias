@@ -5,6 +5,7 @@ set(SRC "main.cpp")
 set(LIBS
     Algorithms
     Structures::Any
+    Structures::BoolVector
 )
 
 add_executable(${PROJECT_NAME} ${SRC})
