@@ -1,10 +1,12 @@
 #include "Logger.h"
-#include <string>
+
 #include <iostream>
+#include <string>
 
-namespace Logger{
+namespace Logger {
 
-std::string formatFunctionName(const std::string& function, const std::string& prettyFunction, const int& line)
+std::string formatFunctionName(
+    const std::string& function, const std::string& prettyFunction, const int& line)
 {
     size_t locFunName = prettyFunction.find(function);
     size_t begin = prettyFunction.rfind(" ", locFunName) + 1;
@@ -24,4 +26,4 @@ void showMessage(const LogLevel& logLvl, const std::string& message)
     std::cout << message << std::endl;
 }
 
-}
+} // namespace Logger

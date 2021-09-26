@@ -3,4 +3,7 @@
 #include "Structures/BoolVector/BoolVector.h"
 #include "Structures/SharedPointer/SharedPointer.h"
 
-int main() { return 0; }
+int main()
+{
+    return 0;
+}
