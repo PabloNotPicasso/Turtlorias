@@ -1,5 +1,6 @@
 #include "BoolVector.h"
 
+#include <cassert>
 #include <iostream>
 
 // anonymous
@@ -42,9 +43,7 @@ bool BoolVector::BitController::getBit() const
 void BoolVector::BitController::setBit(const bool& newValue)
 {
     if (getBit() != newValue) {
-        std::cout << " Change Value " << m_index << " " << (int)m_byte << " ";
         m_byte ^= (1 << m_index);
-        std::cout << " to " << (int)m_byte << " \n";
     }
 }
 // End of BitController
@@ -66,11 +65,13 @@ BoolVector::BoolVector(const std::initializer_list<bool> list)
 
 BoolVector::BitController BoolVector::operator[](const size_t& index)
 {
+    assert(index < size());
     return BitController(index, getByteRef(index));
 }
 
 BoolVector::BitController BoolVector::operator[](const size_t& index) const
 {
+    assert(index < size());
     return BitController(index, getByteRef(index));
 }
 

@@ -29,7 +29,7 @@ private:
     };
 
 public:
-    BoolVector(const size_t& size = 1000);
+    BoolVector(const size_t& size = 0);
     BoolVector(std::initializer_list<bool> list);
 
     BitController operator[](const size_t& index);
