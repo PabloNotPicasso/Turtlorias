@@ -7,6 +7,7 @@ project(cpp-tricks)
 include(SetUp)
 include(CodeFormatting)
 include(Macro)
+include(AddGoogleTest)
 
+include_directories(src)
 add_subdirectory(src)
-

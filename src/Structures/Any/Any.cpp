@@ -15,6 +15,7 @@ void Any::reset() {
   } else if (ind.hash_code() == typeid(string).hash_code()) {
     delete static_cast<string *>(ptr);
   }
+    ind = typeid(nullptr);
   ptr = nullptr;
 }
 
