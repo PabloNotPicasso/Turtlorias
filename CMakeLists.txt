@@ -4,6 +4,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 
 project(cpp-tricks)
 
+include(CTest)
 include(SetUp)
 include(CodeFormatting)
 include(Macro)
