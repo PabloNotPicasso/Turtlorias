@@ -4,11 +4,10 @@
 #include <vector>
 
 namespace Structures {
-using byte = int8_t;
 
 class BoolVector {
-public:
 private:
+    using byte = int8_t;
     class BitController {
     public:
         BitController(const BitController& bc) = default;

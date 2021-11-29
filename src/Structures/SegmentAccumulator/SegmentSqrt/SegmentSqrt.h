@@ -19,6 +19,7 @@ public:
         const ValueType& zerro) override;
 
     ValueType get(const int& l, const int& r) const override;
+
     void update(const int& index, const ValueType& newValue) override;
 
     bool isBuilt() const override;

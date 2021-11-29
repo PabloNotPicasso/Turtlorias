@@ -101,7 +101,7 @@ void BoolVector::extend()
     m_array.push_back(0);
 }
 
-byte& BoolVector::getByteRef(const size_t& index) const
+BoolVector::byte& BoolVector::getByteRef(const size_t& index) const
 {
     return m_array[index / BIT_IN_BYTE];
 }
