@@ -1,0 +1,2 @@
+build_library(SegmentTree)
+build_library(SegmentSqrt)

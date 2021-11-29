@@ -1,4 +1,4 @@
-#include "Structures/SegmentTree/SegmentTree.h"
+#include "Structures/SegmentAccumulator/SegmentSqrt/SegmentSqrt.h"
 
 #include <gtest/gtest.h>
 
@@ -8,9 +8,7 @@ using namespace Structures;
 
 struct vec {
     int x, y;
-    vec()
-    {
-    }
+    vec() = default;
     vec(int x, int y)
         : x(x)
         , y(y)
@@ -35,61 +33,61 @@ ValueType funLinear(
     return accumulation;
 }
 
-TEST(SegmentTree, init)
+TEST(SegmentSqrt, init)
 {
     using ValueType = int;
     std::vector<ValueType> array = {1, 2, 3, 4, 5, 6, 7};
 
-    SegmentTree<ValueType> segTree;
-    EXPECT_FALSE(segTree.isBuilt());
+    SegmentSqrt<ValueType> segmentSqrt;
+    EXPECT_FALSE(segmentSqrt.isBuilt());
 
     auto sum = [](const ValueType& a, const ValueType& b) { return a + b; };
-    segTree.init(array, sum, 0);
+    segmentSqrt.init(array, sum, 0);
 
-    EXPECT_TRUE(segTree.isBuilt());
+    EXPECT_TRUE(segmentSqrt.isBuilt());
 }
 
-TEST(SegmentTree, getSum)
+TEST(SegmentSqrt, getSum)
 {
     using ValueType = int;
     std::vector<ValueType> array = {1, 2, 3, 4, 5, 6, 7};
 
-    SegmentTree<ValueType> segTree;
+    SegmentSqrt<ValueType> segmentSqrt;
     auto sum = [](const ValueType& a, const ValueType& b) { return a + b; };
-    segTree.init(array, sum, 0);
+    segmentSqrt.init(array, sum, 0);
 
-    for (int l = 0; l < array.size(); ++l)
-        for (int r = l; r < array.size(); ++r)
-            EXPECT_EQ(funLinear<ValueType>(array, l, r, sum, 0), segTree.get(l, r));
+    for (size_t l = 0; l < array.size(); ++l)
+        for (size_t r = l; r < array.size(); ++r)
+            EXPECT_EQ(funLinear<ValueType>(array, l, r, sum, 0), segmentSqrt.get(l, r));
 }
 
-TEST(SegmentTree, getProduct)
+TEST(SegmentSqrt, getProduct)
 {
     using ValueType = int;
     std::vector<ValueType> array = {1, 2, 3, 4, 5, 6, 7};
 
-    SegmentTree<ValueType> segTree;
+    SegmentSqrt<ValueType> segmentSqrt;
     auto product = [](const ValueType& a, const ValueType& b) { return a * b; };
-    segTree.init(array, product, 1);
+    segmentSqrt.init(array, product, 1);
 
-    for (int l = 0; l < array.size(); ++l)
-        for (int r = l; r < array.size(); ++r)
-            EXPECT_EQ(funLinear<ValueType>(array, l, r, product, 1), segTree.get(l, r));
+    for (size_t l = 0; l < array.size(); ++l)
+        for (size_t r = l; r < array.size(); ++r)
+            EXPECT_EQ(funLinear<ValueType>(array, l, r, product, 1), segmentSqrt.get(l, r));
 }
 
-TEST(SegmentTree, getSumVec)
+TEST(SegmentSqrt, getSumVec)
 {
     using ValueType = vec;
     std::vector<ValueType> array = {{1, 1}, {14, -1}, {8, 5}, {5, 1}};
 
-    SegmentTree<ValueType> segTree;
+    SegmentSqrt<ValueType> segmentSqrt;
     auto sum = [](const ValueType& a, const ValueType& b) { return a + b; };
-    segTree.init(array, sum, {0, 0});
+    segmentSqrt.init(array, sum, {0, 0});
 
-    for (int l = 0; l < array.size(); ++l)
-        for (int r = l; r < array.size(); ++r) {
+    for (size_t l = 0; l < array.size(); ++l)
+        for (size_t r = l; r < array.size(); ++r) {
             auto linear = funLinear<ValueType>(array, l, r, sum, {0, 0});
-            auto ans = segTree.get(l, r);
+            auto ans = segmentSqrt.get(l, r);
             EXPECT_TRUE(linear.x == ans.x && linear.y == ans.y);
         }
 }

@@ -1,30 +1,31 @@
 #pragma once
-#include <functional>
+#include "Structures/SegmentAccumulator/ISegmentAccumulator.h"
 
 namespace Structures {
 
 template<
     typename ValueType,
     typename AccumulateFunction = std::function<ValueType(const ValueType&, const ValueType&)>>
-class SegmentTree {
+class SegmentTree : public ISegmentAccumulator<ValueType> {
 public:
     SegmentTree();
+    virtual ~SegmentTree() = default;
 
     void init(
         const std::vector<ValueType>& array,
         const AccumulateFunction& accumulateFunction,
-        const ValueType& zerro);
+        const ValueType& zerro) override;
 
-    ValueType get(const int l, const int r);
-    void update(const int& index, const ValueType& newValue);
+    ValueType get(const int& l, const int& r) const override;
+    void update(const int& index, const ValueType& newValue) override;
 
-    bool isBuilt() const;
+    bool isBuilt() const override;
 
 private:
     void buildTree(const std::vector<ValueType>& array);
 
     void buildTreeRecurse(const std::vector<ValueType>& array, int lPoint, int rPoint, int v);
-    ValueType getRecurse(const int lSegment, const int rSegment, int lTree, int rTree, int v);
+    ValueType getRecurse(const int lSegment, const int rSegment, int lTree, int rTree, int v) const;
     void updateRecurse(const int& index, const ValueType& newValue, int lTree, int rTree, int v);
 
 private:
@@ -60,7 +61,7 @@ bool SegmentTree<ValueType, AccumulateFunction>::isBuilt() const
 }
 
 template<typename ValueType, typename AccumulateFunction>
-ValueType SegmentTree<ValueType, AccumulateFunction>::get(const int l, const int r)
+ValueType SegmentTree<ValueType, AccumulateFunction>::get(const int& l, const int& r) const
 {
     return getRecurse(l, r, 0, m_elementCnt - 1, 1);
 }
@@ -100,7 +101,7 @@ void SegmentTree<ValueType, AccumulateFunction>::buildTreeRecurse(
 
 template<typename ValueType, typename AccumulateFunction>
 ValueType SegmentTree<ValueType, AccumulateFunction>::getRecurse(
-    const int lSegment, const int rSegment, int lTree, int rTree, int v)
+    const int lSegment, const int rSegment, int lTree, int rTree, int v) const
 {
     if (lSegment > rSegment)
         return m_zerro;
