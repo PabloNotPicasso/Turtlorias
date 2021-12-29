@@ -8,7 +8,7 @@
 6. Add PlantUML guide
 7. Add C++ tricks overview
 8. Patterns
-...
+9. Add Docker guide
 
 ## Structures & Algorithms
 
