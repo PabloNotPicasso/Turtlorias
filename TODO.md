@@ -9,6 +9,7 @@
 7. Add C++ tricks overview
 8. Patterns
 9. Add Docker guide
+10. Add GDB guide
 
 ## Structures & Algorithms
 
