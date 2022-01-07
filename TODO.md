@@ -2,6 +2,9 @@
 
 1. Add Cmake guide
 2. Add Gtest guide
+    2.1 Add Recordproperty
+    2.2 Add calling from main
+    2.3 Add executing with flags
 3. Add ProtoBuff guide
 4. Add Git guide
 5. Add Doxygen guide
