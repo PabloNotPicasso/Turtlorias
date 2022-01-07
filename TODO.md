@@ -10,6 +10,7 @@
 8. Patterns
 9. Add Docker guide
 10. Add GDB guide
+11. Add C++ output formatting guide
 
 ## Structures & Algorithms
 
