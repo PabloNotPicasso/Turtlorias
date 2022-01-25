@@ -2,75 +2,13 @@
 #include "Structures/SegmentAccumulator/SegmentSqrt/SegmentSqrt.h"
 #include "Structures/SegmentAccumulator/SegmentTree/SegmentTree.h"
 
+#include "Helpers/Helpers.h"
 #include <gtest/gtest.h>
 
 using namespace Structures;
-using Numeric = long long;
-
-namespace Helpers{
-template<
-    typename ValueType,
-    typename AccumulateFunction = std::function<ValueType(const ValueType&, const ValueType&)>>
-ValueType funLinear(
-    std::vector<ValueType> array, int l, int r, AccumulateFunction accum, ValueType zerro)
-{
-    ValueType accumulation = zerro;
-    for (int i = l; i <= r; ++i)
-        accumulation = accum(accumulation, array[i]);
-    return accumulation;
-}
-// Vector class
-struct Vector {
-    int x, y;
-    Vector() = default;
-    Vector(int x)
-        : x(x)
-        , y(x){};
-    Vector(int x, int y)
-        : x(x)
-        , y(y)
-    {
-    }
-    Vector operator+(Vector toAdd) const
-    {
-        return Vector(x + toAdd.x, y + toAdd.y);
-    }
-    Vector operator*(Vector toMul) const
-    {
-        return Vector(x * toMul.x, y * toMul.y);
-    }
-};
-bool operator==(const Vector l, const Vector r)
-{
-    return l.x == r.x && l.y == r.y;
-}
-
-template<typename T>
-T getRandom(int l, int r);
-
-template<>
-Numeric getRandom(int l, int r)
-{
-    return rand() % (r - l + 1) + l;
-}
-
-template<>
-Vector getRandom(int l, int r)
-{
-    return Vector(getRandom<Numeric>(l, r), getRandom<Numeric>(l, r));
-}
-
-template<typename T>
-std::vector<T> getRandomArray(int size)
-{
-    std::vector<T> v(size);
-    for (int i = 0; i < size; ++i) {
-        v[i] = getRandom<T>(-1e9, 1e9);
-    }
-    return v;
-}
-} // namespace Helpers
 using namespace Helpers;
+
+using Numeric = long long;
 
 template<template <typename> typename TAccumulator, typename ValueType>
 struct TestedClassContainer
@@ -138,7 +76,7 @@ TYPED_TEST(SegmentAccumulatorTest, getSum1e2)
 
     for (size_t l = 0; l < array.size(); ++l)
         for (size_t r = l; r < array.size(); ++r)
-            EXPECT_EQ(funLinear<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
+            EXPECT_EQ(linearAccumulation<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
 }
 
 TYPED_TEST(SegmentAccumulatorTest, getSum1e3)
@@ -151,7 +89,7 @@ TYPED_TEST(SegmentAccumulatorTest, getSum1e3)
 
     for (size_t l = 0; l < array.size(); ++l)
         for (size_t r = l; r < array.size(); ++r)
-            EXPECT_EQ(funLinear<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
+            EXPECT_EQ(linearAccumulation<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
 }
 
 TYPED_TEST(SegmentAccumulatorTest, getProduct)
@@ -164,7 +102,7 @@ TYPED_TEST(SegmentAccumulatorTest, getProduct)
 
     for (size_t l = 0; l < array.size(); ++l)
         for (size_t r = l; r < array.size(); ++r)
-            EXPECT_EQ(funLinear<ValueType>(array, l, r, product, 1), this->accumulator->get(l, r));
+            EXPECT_EQ(linearAccumulation<ValueType>(array, l, r, product, 1), this->accumulator->get(l, r));
 }
 
 TYPED_TEST(SegmentAccumulatorTest, update)
@@ -185,6 +123,6 @@ TYPED_TEST(SegmentAccumulatorTest, update)
 
         for (size_t l = 0; l < array.size(); ++l)
             for (size_t r = l; r < array.size(); ++r)
-                EXPECT_EQ(funLinear<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
+                EXPECT_EQ(linearAccumulation<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
     }
 }
