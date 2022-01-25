@@ -6,10 +6,10 @@
 namespace Structures {
 
 template<
-    typename ValueType,
-    typename AccumulateFunction = std::function<ValueType(const ValueType&, const ValueType&)>>
+    typename ValueType>
 class SegmentSqrt : public ISegmentAccumulator<ValueType> {
 public:
+    using AccumulateFunction = typename ISegmentAccumulator<ValueType>::AccumulateFunction;
     SegmentSqrt();
     virtual ~SegmentSqrt() = default;
 
@@ -37,14 +37,14 @@ private:
 };
 
 // Implementation
-template<typename ValueType, typename AccumulateFunction>
-SegmentSqrt<ValueType, AccumulateFunction>::SegmentSqrt()
+template<typename ValueType>
+SegmentSqrt<ValueType>::SegmentSqrt()
     : m_isBuilt(false)
 {
 }
 
-template<typename ValueType, typename AccumulateFunction>
-void SegmentSqrt<ValueType, AccumulateFunction>::init(
+template<typename ValueType>
+void SegmentSqrt<ValueType>::init(
     const std::vector<ValueType>& array,
     const AccumulateFunction& accumulateFunction,
     const ValueType& zerro)
@@ -56,14 +56,14 @@ void SegmentSqrt<ValueType, AccumulateFunction>::init(
     m_isBuilt = true;
 }
 
-template<typename ValueType, typename AccumulateFunction>
-bool SegmentSqrt<ValueType, AccumulateFunction>::isBuilt() const
+template<typename ValueType>
+bool SegmentSqrt<ValueType>::isBuilt() const
 {
     return m_isBuilt;
 }
 
-template<typename ValueType, typename AccumulateFunction>
-ValueType SegmentSqrt<ValueType, AccumulateFunction>::get(const int& l, const int& r) const
+template<typename ValueType>
+ValueType SegmentSqrt<ValueType>::get(const int& l, const int& r) const
 {
     ValueType accumulation = m_zerro;
     for (int i = l; i <= r;) {
@@ -81,8 +81,8 @@ ValueType SegmentSqrt<ValueType, AccumulateFunction>::get(const int& l, const in
     return accumulation;
 }
 
-template<typename ValueType, typename AccumulateFunction>
-void SegmentSqrt<ValueType, AccumulateFunction>::update(const int& index, const ValueType& newValue)
+template<typename ValueType>
+void SegmentSqrt<ValueType>::update(const int& index, const ValueType& newValue)
 {
     auto& blockToChange = m_blocks[index / m_blockLen];
     m_array[index] = newValue;
@@ -94,8 +94,8 @@ void SegmentSqrt<ValueType, AccumulateFunction>::update(const int& index, const 
     }
 }
 
-template<typename ValueType, typename AccumulateFunction>
-void SegmentSqrt<ValueType, AccumulateFunction>::buildBlocks()
+template<typename ValueType>
+void SegmentSqrt<ValueType>::buildBlocks()
 {
     m_blockLen = std::sqrt(m_array.size()) + 1;
     m_blocks.resize(m_blockLen, m_zerro);

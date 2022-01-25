@@ -2,10 +2,12 @@
 #include <functional>
 
 template<
-    typename ValueType,
-    typename AccumulateFunction = std::function<ValueType(const ValueType&, const ValueType&)>>
+    typename ValueType>
 class ISegmentAccumulator {
 public:
+    using InternalValueType = ValueType;
+    using AccumulateFunction = std::function<ValueType(const ValueType&, const ValueType&)>;
+
     virtual ~ISegmentAccumulator() = default;
 
     /**

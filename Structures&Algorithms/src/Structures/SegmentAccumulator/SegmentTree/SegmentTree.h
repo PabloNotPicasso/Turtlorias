@@ -4,10 +4,10 @@
 namespace Structures {
 
 template<
-    typename ValueType,
-    typename AccumulateFunction = std::function<ValueType(const ValueType&, const ValueType&)>>
+    typename ValueType>
 class SegmentTree : public ISegmentAccumulator<ValueType> {
 public:
+    using AccumulateFunction = typename ISegmentAccumulator<ValueType>::AccumulateFunction;
     SegmentTree();
     virtual ~SegmentTree() = default;
 
@@ -34,18 +34,19 @@ private:
     AccumulateFunction m_accumulate;
     ValueType m_zerro;
     int m_elementCnt;
+public:
     std::vector<ValueType> m_tree;
 };
 
 // Implementation
-template<typename ValueType, typename AccumulateFunction>
-SegmentTree<ValueType, AccumulateFunction>::SegmentTree()
+template<typename ValueType>
+SegmentTree<ValueType>::SegmentTree()
     : m_isBuilt(false)
 {
 }
 
-template<typename ValueType, typename AccumulateFunction>
-void SegmentTree<ValueType, AccumulateFunction>::init(
+template<typename ValueType>
+void SegmentTree<ValueType>::init(
     const std::vector<ValueType>& array,
     const AccumulateFunction& accumulateFunction,
     const ValueType& zerro)
@@ -55,35 +56,35 @@ void SegmentTree<ValueType, AccumulateFunction>::init(
     buildTree(array);
 }
 
-template<typename ValueType, typename AccumulateFunction>
-bool SegmentTree<ValueType, AccumulateFunction>::isBuilt() const
+template<typename ValueType>
+bool SegmentTree<ValueType>::isBuilt() const
 {
     return m_isBuilt;
 }
 
-template<typename ValueType, typename AccumulateFunction>
-ValueType SegmentTree<ValueType, AccumulateFunction>::get(const int& l, const int& r) const
+template<typename ValueType>
+ValueType SegmentTree<ValueType>::get(const int& l, const int& r) const
 {
     return getRecurse(l, r, 0, m_elementCnt - 1, 1);
 }
 
-template<typename ValueType, typename AccumulateFunction>
-void SegmentTree<ValueType, AccumulateFunction>::update(const int& index, const ValueType& newValue)
+template<typename ValueType>
+void SegmentTree<ValueType>::update(const int& index, const ValueType& newValue)
 {
     updateRecurse(index, newValue, 0, m_elementCnt - 1, 1);
 }
 
-template<typename ValueType, typename AccumulateFunction>
-void SegmentTree<ValueType, AccumulateFunction>::buildTree(const std::vector<ValueType>& array)
+template<typename ValueType>
+void SegmentTree<ValueType>::buildTree(const std::vector<ValueType>& array)
 {
     m_elementCnt = array.size();
-    m_tree.resize(m_elementCnt * 2);
+    m_tree.resize(m_elementCnt * 3);
     buildTreeRecurse(array, 0, m_elementCnt - 1, 1);
     m_isBuilt = true;
 }
 
-template<typename ValueType, typename AccumulateFunction>
-void SegmentTree<ValueType, AccumulateFunction>::buildTreeRecurse(
+template<typename ValueType>
+void SegmentTree<ValueType>::buildTreeRecurse(
     const std::vector<ValueType>& array, int lPoint, int rPoint, int v)
 {
     if (lPoint == rPoint) {
@@ -100,8 +101,8 @@ void SegmentTree<ValueType, AccumulateFunction>::buildTreeRecurse(
     m_tree[v] = m_accumulate(m_tree[leftTreeVertex], m_tree[rightTreeVertex]);
 }
 
-template<typename ValueType, typename AccumulateFunction>
-ValueType SegmentTree<ValueType, AccumulateFunction>::getRecurse(
+template<typename ValueType>
+ValueType SegmentTree<ValueType>::getRecurse(
     const int lSegment, const int rSegment, int lTree, int rTree, int v) const
 {
     if (lSegment > rSegment)
@@ -119,8 +120,8 @@ ValueType SegmentTree<ValueType, AccumulateFunction>::getRecurse(
     return m_accumulate(leftTreeSum, rightTreeSum);
 }
 
-template<typename ValueType, typename AccumulateFunction>
-void SegmentTree<ValueType, AccumulateFunction>::updateRecurse(
+template<typename ValueType>
+void SegmentTree<ValueType>::updateRecurse(
     const int& index, const ValueType& newValue, int lTree, int rTree, int v)
 {
     if (lTree == rTree) {
