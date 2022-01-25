@@ -1,8 +1,8 @@
+#include "Helpers/Helpers.h"
 #include "Structures/SegmentAccumulator/SegmentBrute/SegmentBrute.h"
 #include "Structures/SegmentAccumulator/SegmentSqrt/SegmentSqrt.h"
 #include "Structures/SegmentAccumulator/SegmentTree/SegmentTree.h"
 
-#include "Helpers/Helpers.h"
 #include <gtest/gtest.h>
 
 using namespace Structures;
@@ -10,9 +10,8 @@ using namespace Helpers;
 
 using Numeric = long long;
 
-template<template <typename> typename TAccumulator, typename ValueType>
-struct TestedClassContainer
-{
+template<template<typename> typename TAccumulator, typename ValueType>
+struct TestedClassContainer {
     using _Acccumulator = TAccumulator<ValueType>;
     using _ValueType = ValueType;
 };
@@ -23,12 +22,14 @@ protected:
     using _ValueType = typename TestedClassContainer::_ValueType;
     using _Acccumulator = typename TestedClassContainer::_Acccumulator;
 
-    void SetUp() override{
+    void SetUp() override
+    {
         srand(time(nullptr));
         accumulator = new _Acccumulator();
     }
 
-    void TearDown() override{
+    void TearDown() override
+    {
         delete accumulator;
     }
 
@@ -43,12 +44,12 @@ protected:
 
 // Setting implementations
 using AccumulatorsImpl = testing::Types<
-    TestedClassContainer<SegmentTree,Numeric>,
-    TestedClassContainer<SegmentSqrt,Numeric>,
-    TestedClassContainer<SegmentBrute,Numeric>,
-    TestedClassContainer<SegmentTree,Vector>,
-    TestedClassContainer<SegmentSqrt,Vector>,
-    TestedClassContainer<SegmentBrute,Vector>>;
+    TestedClassContainer<SegmentTree, Numeric>,
+    TestedClassContainer<SegmentSqrt, Numeric>,
+    TestedClassContainer<SegmentBrute, Numeric>,
+    TestedClassContainer<SegmentTree, Vector>,
+    TestedClassContainer<SegmentSqrt, Vector>,
+    TestedClassContainer<SegmentBrute, Vector>>;
 
 TYPED_TEST_SUITE(SegmentAccumulatorTest, AccumulatorsImpl);
 
@@ -76,7 +77,8 @@ TYPED_TEST(SegmentAccumulatorTest, getSum1e2)
 
     for (size_t l = 0; l < array.size(); ++l)
         for (size_t r = l; r < array.size(); ++r)
-            EXPECT_EQ(linearAccumulation<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
+            EXPECT_EQ(
+                linearAccumulation<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
 }
 
 TYPED_TEST(SegmentAccumulatorTest, getSum1e3)
@@ -89,7 +91,8 @@ TYPED_TEST(SegmentAccumulatorTest, getSum1e3)
 
     for (size_t l = 0; l < array.size(); ++l)
         for (size_t r = l; r < array.size(); ++r)
-            EXPECT_EQ(linearAccumulation<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
+            EXPECT_EQ(
+                linearAccumulation<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
 }
 
 TYPED_TEST(SegmentAccumulatorTest, getProduct)
@@ -102,7 +105,9 @@ TYPED_TEST(SegmentAccumulatorTest, getProduct)
 
     for (size_t l = 0; l < array.size(); ++l)
         for (size_t r = l; r < array.size(); ++r)
-            EXPECT_EQ(linearAccumulation<ValueType>(array, l, r, product, 1), this->accumulator->get(l, r));
+            EXPECT_EQ(
+                linearAccumulation<ValueType>(array, l, r, product, 1),
+                this->accumulator->get(l, r));
 }
 
 TYPED_TEST(SegmentAccumulatorTest, update)
@@ -113,16 +118,17 @@ TYPED_TEST(SegmentAccumulatorTest, update)
     auto zerro = 0ll;
     this->accumulator->init(array, sum, zerro);
 
-    for( int i = 0; i < 100; ++i)
-    {
-        int id = getRandom<Numeric>(0,array.size()-1);
-        Numeric newValue = getRandom<Numeric>(1,1e9);
+    for (int i = 0; i < 100; ++i) {
+        int id = getRandom<Numeric>(0, array.size() - 1);
+        Numeric newValue = getRandom<Numeric>(1, 1e9);
 
         this->accumulator->update(id, newValue);
         array[id] = newValue;
 
         for (size_t l = 0; l < array.size(); ++l)
             for (size_t r = l; r < array.size(); ++r)
-                EXPECT_EQ(linearAccumulation<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
+                EXPECT_EQ(
+                    linearAccumulation<ValueType>(array, l, r, sum, 0),
+                    this->accumulator->get(l, r));
     }
 }

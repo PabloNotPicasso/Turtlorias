@@ -5,8 +5,7 @@
 
 namespace Structures {
 
-template<
-    typename ValueType>
+template<typename ValueType>
 class SegmentSqrt : public ISegmentAccumulator<ValueType> {
 public:
     using AccumulateFunction = typename ISegmentAccumulator<ValueType>::AccumulateFunction;

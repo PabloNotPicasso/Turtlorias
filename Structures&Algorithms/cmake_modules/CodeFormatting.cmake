@@ -5,7 +5,7 @@ set(EXCLUDE_PATH
 )
 
 set(FIND_CPP_COMMAND
-    "find ${PROJECT_SOURCE_DIR} -regex '.*\\.\\(c\\|cc\\|cpp\\|cxx\\|h\\|hh\\|hpp\\|hxx\\)$' ${EXCLUDE_PATH}"
+    "find '${PROJECT_SOURCE_DIR}' -regex '.*\\.\\(c\\|cc\\|cpp\\|cxx\\|h\\|hh\\|hpp\\|hxx\\)$' ${EXCLUDE_PATH}"
 )
 
 add_custom_target(

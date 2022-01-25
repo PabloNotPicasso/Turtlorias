@@ -2,7 +2,7 @@
 
 #include <functional>
 
-namespace Helpers{
+namespace Helpers {
 
 template<
     typename ValueType,
@@ -39,6 +39,7 @@ struct Vector {
     {
         return x == r.x && y == r.y;
     }
+
 protected:
     ValueType x, y;
 };
@@ -65,4 +66,4 @@ std::vector<T> getRandomArray(int size)
     return v;
 }
 
-}
+} // namespace Helpers

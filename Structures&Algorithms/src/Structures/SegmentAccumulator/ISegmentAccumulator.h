@@ -1,8 +1,7 @@
 #pragma once
 #include <functional>
 
-template<
-    typename ValueType>
+template<typename ValueType>
 class ISegmentAccumulator {
 public:
     using InternalValueType = ValueType;

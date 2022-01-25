@@ -3,8 +3,7 @@
 
 namespace Structures {
 
-template<
-    typename ValueType>
+template<typename ValueType>
 class SegmentTree : public ISegmentAccumulator<ValueType> {
 public:
     using AccumulateFunction = typename ISegmentAccumulator<ValueType>::AccumulateFunction;

@@ -6,8 +6,7 @@
 
 namespace Structures {
 
-template<
-    typename ValueType>
+template<typename ValueType>
 class SegmentBrute : public ISegmentAccumulator<ValueType> {
 public:
     using AccumulateFunction = typename ISegmentAccumulator<ValueType>::AccumulateFunction;
@@ -66,8 +65,7 @@ ValueType SegmentBrute<ValueType>::get(const int& l, const int& r) const
 }
 
 template<typename ValueType>
-void SegmentBrute<ValueType>::update(
-    const int& index, const ValueType& newValue)
+void SegmentBrute<ValueType>::update(const int& index, const ValueType& newValue)
 {
     m_array[index] = newValue;
 }
