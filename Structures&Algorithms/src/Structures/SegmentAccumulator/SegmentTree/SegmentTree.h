@@ -34,7 +34,6 @@ private:
     AccumulateFunction m_accumulate;
     ValueType m_zerro;
     int m_elementCnt;
-public:
     std::vector<ValueType> m_tree;
 };
 
