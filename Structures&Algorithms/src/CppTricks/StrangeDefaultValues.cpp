@@ -1,13 +1,11 @@
-#include<bits/stdc++.h>
-
-using namespace std;
+#include<iostream>
 
 class Base
 {
 public:
     virtual ~Base() = default;
     virtual void foo(std::string str = "default" ){
-        cout << "Base::foo(std::string str = \"default\" ) : " << str << endl;
+        std::cout << "Base::foo(std::string str = \"default\" ) : " << str << std::endl;
     }
 };
 
@@ -18,12 +16,15 @@ class Derived : public Base
 
     void foo(std::string str = "default" ) override
     {
-        cout << "Derived::foo(std::string str = \"default\" ) : " << str << endl;
+        std::cout << "Derived::foo(std::string str = \"default\" ) : " << str << std::endl;
     }
 
+    /**
+     * @brief This function will never be called =(
+     */
     void foo()
     {
-        cout << "Derived::foo()" << endl;
+        std::cout << "Derived::foo()" << std::endl;
     }
 };
 
