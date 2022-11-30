@@ -1,20 +1,19 @@
-#include<iostream>
+#include <iostream>
 
-class Base
-{
+class Base {
 public:
     virtual ~Base() = default;
-    virtual void foo(std::string str = "default" ){
+    virtual void foo(std::string str = "default")
+    {
         std::cout << "Base::foo(std::string str = \"default\" ) : " << str << std::endl;
     }
 };
 
-class Derived : public Base
-{
-    public:
+class Derived : public Base {
+public:
     virtual ~Derived() = default;
 
-    void foo(std::string str = "default" ) override
+    void foo(std::string str = "default") override
     {
         std::cout << "Derived::foo(std::string str = \"default\" ) : " << str << std::endl;
     }
@@ -27,7 +26,6 @@ class Derived : public Base
         std::cout << "Derived::foo()" << std::endl;
     }
 };
-
 
 int main()
 {

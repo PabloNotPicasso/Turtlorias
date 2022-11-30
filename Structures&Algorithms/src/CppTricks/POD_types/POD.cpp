@@ -2,7 +2,7 @@
 
 /**
  * @brief POD type is both StandardLayout and Trivial struct
- * 
+ *
  * When a class or struct is both trivial and standard-layout,
  * it is a POD (Plain Old Data) type. The memory layout of POD
  * types is therefore contiguous and each member has a higher
@@ -11,80 +11,93 @@
  * on these types. Scalar types such as int are also POD types.
  * POD types that are classes can have only POD types
  * as non-static data members.
- * 
+ *
  * https://learn.microsoft.com/en-us/cpp/cpp/trivial-standard-layout-and-pod-types?view=msvc-170
  */
 
 namespace ArePOD {
 
-struct POD1
-{
+struct POD1 {
 public:
     POD1() = default;
-    POD1(int a, int b) : i(a), j(b) {}
-    void function(){
+    POD1(int a, int b)
+        : i(a)
+        , j(b)
+    {
+    }
+    void function()
+    {
         // just function
     }
     int i;
     int j;
 };
 
-struct PODDerived : public POD1
-{
+struct PODDerived : public POD1 {
 public:
     PODDerived() = default;
-    PODDerived(int a, int b) : POD1(a,b) {}
-    void otherFunction(){
+    PODDerived(int a, int b)
+        : POD1(a, b)
+    {
+    }
+    void otherFunction()
+    {
         // just function
     }
 };
 
-}
+} // namespace ArePOD
 
 namespace NotPOD {
 
-struct NonPODBase
-{
+struct NonPODBase {
 public:
     // POD structure cannot contain virtual function
-    virtual void anyVirtualFunction(){}
+    virtual void anyVirtualFunction()
+    {
+    }
 };
 
-struct NonPODDerived : public NonPODBase
-{
+struct NonPODDerived : public NonPODBase {
 public:
     // POD structure cannot contain virtual function
-    void anyVirtualFunction() override{}
+    void anyVirtualFunction() override
+    {
+    }
 };
 
-
-struct NonPOD1
-{
+struct NonPOD1 {
 public:
-    NonPOD1(){}
+    NonPOD1()
+    {
+    }
 
     // POD structure cannot contain virtual function
-    virtual void anyVirtualFunction(){}
+    virtual void anyVirtualFunction()
+    {
+    }
 
     int a;
     int b;
 };
 
-struct NonPOD2
-{
+struct NonPOD2 {
 public:
     // POD structure cannot contain user-defined constructor
-    NonPOD2(){}
+    NonPOD2()
+    {
+    }
 
     int a;
     int b;
 };
 
-struct NonPOD3
-{
+struct NonPOD3 {
 public:
     // POD structure cannot contain user-defined constructor
-    NonPOD3(){}
+    NonPOD3()
+    {
+    }
 
     int a;
 
@@ -93,7 +106,7 @@ private:
     int b;
 };
 
-}
+} // namespace NotPOD
 
 int main()
 {

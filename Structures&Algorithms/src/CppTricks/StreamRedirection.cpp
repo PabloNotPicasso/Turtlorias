@@ -1,9 +1,9 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 /**
  * @brief This is example of stream to file redirection
- * 
+ *
  * std::ostream::rdbuf() function returns current buffer
  * std::ostream::rdbuf(buffer) function sets \p buffer as buffer to stream data
  */
