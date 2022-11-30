@@ -1,4 +1,4 @@
-FROM gcc:latest as turtoriasToolchain
+FROM gcc:latest
 
 RUN apt-get update && \
     apt-get install -y \
@@ -24,9 +24,14 @@ RUN cd googletest && \
 
 ###########################
 # Adding User
+ARG USERID=1000
+ARG GROUPID=1000
 ARG USERNAME=turtorias_user
 ARG USERGROUP=turtorias_group
 
-RUN groupadd -r $USERGROUP
-RUN useradd -r -u 1000 -g $USERGROUP $USERNAME
-USER $USERNAME
+RUN groupadd -o -g ${GROUPID} ${USERGROUP} \
+  && useradd -o --no-log-init -m -u ${USERID} -g ${USERGROUP} ${USERNAME}
+
+# RUN groupadd -r $USERGROUP
+# RUN useradd -r -u 1000 -g $USERGROUP $USERNAME
+USER ${USERNAME}
