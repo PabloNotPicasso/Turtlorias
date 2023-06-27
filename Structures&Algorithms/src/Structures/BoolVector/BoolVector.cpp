@@ -12,7 +12,7 @@ namespace Structures {
 
 ////////////////////////////////////////////////////////////////////////////////////
 // BitController
-BoolVector::BitController::BitController(const size_t& globalIndex, byte& byteRef)
+BoolVector::BitController::BitController(const size_t globalIndex, byte& byteRef)
     : m_index(globalIndex % BIT_IN_BYTE)
     , m_byte(byteRef)
 {
@@ -40,7 +40,7 @@ bool BoolVector::BitController::getBit() const
     return m_byte & (1 << m_index);
 }
 
-void BoolVector::BitController::setBit(const bool& newValue)
+void BoolVector::BitController::setBit(const bool newValue)
 {
     if (getBit() != newValue) {
         m_byte ^= (1 << m_index);
@@ -49,7 +49,7 @@ void BoolVector::BitController::setBit(const bool& newValue)
 // End of BitController
 /////////////////////////////////////////////////////////////////////////
 
-BoolVector::BoolVector(const size_t& size)
+BoolVector::BoolVector(const size_t size)
     : m_array(1 + size / BIT_IN_BYTE)
     , m_size(size)
 {
@@ -63,13 +63,13 @@ BoolVector::BoolVector(const std::initializer_list<bool> list)
     }
 }
 
-BoolVector::BitController BoolVector::operator[](const size_t& index)
+BoolVector::BitController BoolVector::operator[](const size_t index)
 {
     assert(index < size());
     return BitController(index, getByteRef(index));
 }
 
-BoolVector::BitController BoolVector::operator[](const size_t& index) const
+const BoolVector::BitController BoolVector::operator[](const size_t index) const
 {
     assert(index < size());
     return BitController(index, getByteRef(index));
@@ -85,7 +85,7 @@ size_t BoolVector::size() const
     return m_size;
 }
 
-void BoolVector::push_back(const bool& newValue)
+void BoolVector::push_back(const bool newValue)
 {
     if (capacity() == size()) {
         extend();
@@ -101,7 +101,7 @@ void BoolVector::extend()
     m_array.push_back(0);
 }
 
-BoolVector::byte& BoolVector::getByteRef(const size_t& index) const
+BoolVector::byte& BoolVector::getByteRef(const size_t index) const
 {
     return m_array[index / BIT_IN_BYTE];
 }
