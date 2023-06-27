@@ -67,3 +67,30 @@ TEST(BoolVector, push_back)
     EXPECT_EQ(bvector.capacity(), 16);
     EXPECT_EQ(bvector.size(), 9);
 }
+
+TEST(BoolVector, copy)
+{
+    BoolVector bvector(7);
+    bvector[1] = bvector[5] = 1;
+
+    const BoolVector copy = bvector;
+
+    EXPECT_EQ(copy[1], 1);
+    EXPECT_EQ(copy[5], 1);
+    EXPECT_EQ(copy[0], 0);
+    EXPECT_EQ(copy[2], 0);
+    EXPECT_EQ(copy[3], 0);
+    EXPECT_EQ(copy[4], 0);
+    EXPECT_EQ(copy[6], 0);
+
+    // Should be compile error
+    // copy[1] = 0;
+}
+
+TEST(BoolVector, binaryOperators)
+{
+    BoolVector bvector(7);
+
+    EXPECT_TRUE(
+        ((!bvector[5] || bvector[0]) && (bvector[1] == bvector[2])) || (bvector[3] ^ bvector[4]));
+}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 
@@ -10,8 +11,7 @@ private:
     using byte = int8_t;
     class BitController {
     public:
-        BitController(const BitController& bc) = default;
-        BitController(const size_t& globalIndex, byte& byteRef);
+        BitController(const size_t globalIndex, byte& byteRef);
 
         BitController& operator=(const BitController& bc);
         BitController& operator=(bool value);
@@ -20,7 +20,7 @@ private:
 
     protected:
         bool getBit() const;
-        void setBit(const bool& newValue);
+        void setBit(const bool newValue);
 
     private:
         const size_t m_index;
@@ -28,23 +28,42 @@ private:
     };
 
 public:
-    BoolVector(const size_t& size = 0);
+    /**
+     * @brief Will create vector which support at least \p size boolean variables
+     */
+    BoolVector(const size_t size = 0);
+
+    /**
+     * @brief Will create vector using initializer list values
+     */
     BoolVector(std::initializer_list<bool> list);
 
-    BitController operator[](const size_t& index);
+    /**
+     * @brief Returns modifieble BitController by \p index
+     */
+    BitController operator[](const size_t index);
 
-    BitController operator[](const size_t& index) const;
+    const BitController operator[](const size_t index) const;
 
+    /**
+     * @brief Returns capacity of allocated storage
+     */
     size_t capacity() const;
 
+    /**
+     * @brief Returns container size
+     */
     size_t size() const;
 
-    void push_back(const bool& newValue);
+    /**
+     * @brief Push new value to storage
+     */
+    void push_back(const bool newValue);
 
 protected:
     void extend();
 
-    byte& getByteRef(const size_t& index) const;
+    byte& getByteRef(const size_t index) const;
 
 private:
     mutable std::vector<byte> m_array;
