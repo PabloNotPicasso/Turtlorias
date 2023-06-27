@@ -8,9 +8,9 @@ RUN apt-get update && \
     python3 python3-pip \
     libboost-dev libboost-program-options-dev libboost-log-dev
 
+RUN apt-get install python3-setuptools
+RUN apt-get install python3-wheel
 RUN apt-get upgrade -y
-RUN pip3 install --upgrade pip setuptools wheel
-RUN pip3 install cmakelang  
 
 ###########################
 # GTest

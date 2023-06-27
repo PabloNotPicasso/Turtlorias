@@ -15,6 +15,12 @@ docker pull imageName
 
 To run docker container
 ```
+CURRENT_DIR_PATH="$(pwd)"
+DIR_NAME="$(basename ${CURRENT_DIR_PATH})"
+MOUNT_DIR_PATH="$(dirname ${CURRENT_DIR_PATH})"
+MOUNT_POINT_NAME=/ef
+BASH_PROFILE_MOUNT_POINT_NAME=/bp
+
 docker run \
     --name containerName \
     --interactive \
@@ -34,4 +40,9 @@ docker image list
 To delete image
 ```
 docker rmi imageName
+```
+
+To clear cache
+```
+docker system prune
 ```
