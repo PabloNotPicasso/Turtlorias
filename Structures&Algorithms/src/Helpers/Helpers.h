@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <functional>
 
 namespace Helpers {
@@ -15,55 +16,35 @@ ValueType linearAccumulation(
         accumulation = accum(accumulation, array[i]);
     return accumulation;
 }
-// Vector class
-struct Vector {
-    using ValueType = int;
-    Vector() = default;
-    Vector(ValueType x)
-        : x(x)
-        , y(x){};
-    Vector(ValueType x, ValueType y)
-        : x(x)
-        , y(y)
-    {
-    }
-    Vector operator+(Vector toAdd) const
-    {
-        return Vector(x + toAdd.x, y + toAdd.y);
-    }
-    Vector operator*(Vector toMul) const
-    {
-        return Vector(x * toMul.x, y * toMul.y);
-    }
-    bool operator==(const Vector r) const
-    {
-        return x == r.x && y == r.y;
-    }
 
-protected:
-    ValueType x, y;
-};
-
-template<typename T>
-T getRandom(int l, int r)
+template<typename Numeric>
+Numeric getRandom(int l, int r)
 {
     return rand() % (r - l + 1) + l;
 }
 
-template<>
-Vector getRandom(int l, int r)
+template<typename Numeric>
+std::vector<Numeric> getRandomArray(int size)
 {
-    return Vector(getRandom<Vector::ValueType>(l, r), getRandom<Vector::ValueType>(l, r));
-}
-
-template<typename T>
-std::vector<T> getRandomArray(int size)
-{
-    std::vector<T> v(size);
+    std::vector<Numeric> v(size);
     for (int i = 0; i < size; ++i) {
-        v[i] = getRandom<T>(-1e9, 1e9);
+        v[i] = getRandom<Numeric>(-1e9, 1e9);
     }
     return v;
+}
+
+constexpr double EPS = 1e-6;
+
+template<typename Numeric>
+bool areEqual(Numeric lhs, Numeric rhs)
+{
+    return lhs == rhs;
+}
+
+template<>
+bool areEqual(double lhs, double rhs)
+{
+    return fabs(lhs - rhs) < EPS;
 }
 
 } // namespace Helpers

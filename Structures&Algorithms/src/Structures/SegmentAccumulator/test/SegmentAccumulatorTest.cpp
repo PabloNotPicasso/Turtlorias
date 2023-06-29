@@ -1,3 +1,4 @@
+#include "Structures/Geometry/Vector.h"
 #include "Helpers/Helpers.h"
 #include "Structures/SegmentAccumulator/SegmentBrute/SegmentBrute.h"
 #include "Structures/SegmentAccumulator/SegmentSqrt/SegmentSqrt.h"
@@ -47,9 +48,9 @@ using AccumulatorsImpl = testing::Types<
     TestedClassContainer<SegmentTree, Numeric>,
     TestedClassContainer<SegmentSqrt, Numeric>,
     TestedClassContainer<SegmentBrute, Numeric>,
-    TestedClassContainer<SegmentTree, Vector>,
-    TestedClassContainer<SegmentSqrt, Vector>,
-    TestedClassContainer<SegmentBrute, Vector>>;
+    TestedClassContainer<SegmentTree, BaseVector<int>>,
+    TestedClassContainer<SegmentSqrt, BaseVector<int>>,
+    TestedClassContainer<SegmentBrute, BaseVector<int>>>;
 
 TYPED_TEST_SUITE(SegmentAccumulatorTest, AccumulatorsImpl);
 

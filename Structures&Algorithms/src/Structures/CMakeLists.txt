@@ -1,6 +1,7 @@
 set(PACKAGE Structures)
 
 add_subdirectory( SegmentAccumulator )
+add_subdirectory(Geometry)
 
 build_library(Any)
 build_library(BoolVector)
