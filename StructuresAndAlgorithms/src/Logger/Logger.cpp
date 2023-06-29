@@ -1,6 +1,7 @@
 #include "Logger.h"
 
 #include <chrono>
+#include <iomanip>
 #include <iostream>
 
 namespace Logger {
@@ -48,7 +49,7 @@ std::string formatMessage(const std::string& message, std::string_view name)
 
 void showMessage(const LogLevel& logLvl, const std::string& message)
 {
-    std::cout << message << std::endl;
+    std::cout << logLvl << " " << message << std::endl;
 }
 
 } // namespace Logger
