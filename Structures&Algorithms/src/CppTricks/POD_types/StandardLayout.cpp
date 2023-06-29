@@ -30,9 +30,7 @@ namespace AreStandardLayout {
 struct StandardLayout1 {
 public:
     // Can contain user-defined constructor
-    StandardLayout1()
-    {
-    }
+    StandardLayout1() { }
     StandardLayout1(int a, int b)
         : i(a)
         , j(b)
@@ -75,14 +73,10 @@ public:
 
 struct NonStandardLayout1 {
 public:
-    NonStandardLayout1()
-    {
-    }
+    NonStandardLayout1() { }
 
     // StandardLayout structure cannot contain virtual function
-    virtual void anyVirtualFunction()
-    {
-    }
+    virtual void anyVirtualFunction() { }
 
     int a;
     int b;

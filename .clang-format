@@ -1,7 +1,7 @@
 ---
 BasedOnStyle:  WebKit
 AlignAfterOpenBracket: AlwaysBreak
-AllowShortFunctionsOnASingleLine: None
+AllowShortFunctionsOnASingleLine: Empty
 AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: false
 BinPackParameters: false

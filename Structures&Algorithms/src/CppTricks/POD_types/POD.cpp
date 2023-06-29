@@ -53,29 +53,21 @@ namespace NotPOD {
 struct NonPODBase {
 public:
     // POD structure cannot contain virtual function
-    virtual void anyVirtualFunction()
-    {
-    }
+    virtual void anyVirtualFunction() { }
 };
 
 struct NonPODDerived : public NonPODBase {
 public:
     // POD structure cannot contain virtual function
-    void anyVirtualFunction() override
-    {
-    }
+    void anyVirtualFunction() override { }
 };
 
 struct NonPOD1 {
 public:
-    NonPOD1()
-    {
-    }
+    NonPOD1() { }
 
     // POD structure cannot contain virtual function
-    virtual void anyVirtualFunction()
-    {
-    }
+    virtual void anyVirtualFunction() { }
 
     int a;
     int b;
@@ -84,9 +76,7 @@ public:
 struct NonPOD2 {
 public:
     // POD structure cannot contain user-defined constructor
-    NonPOD2()
-    {
-    }
+    NonPOD2() { }
 
     int a;
     int b;
@@ -95,9 +85,7 @@ public:
 struct NonPOD3 {
 public:
     // POD structure cannot contain user-defined constructor
-    NonPOD3()
-    {
-    }
+    NonPOD3() { }
 
     int a;
 

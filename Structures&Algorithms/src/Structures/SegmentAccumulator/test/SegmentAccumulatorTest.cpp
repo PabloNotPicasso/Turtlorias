@@ -1,5 +1,5 @@
-#include "Structures/Geometry/Vector.h"
 #include "Helpers/Helpers.h"
+#include "Structures/Geometry/Vector.h"
 #include "Structures/SegmentAccumulator/SegmentBrute/SegmentBrute.h"
 #include "Structures/SegmentAccumulator/SegmentSqrt/SegmentSqrt.h"
 #include "Structures/SegmentAccumulator/SegmentTree/SegmentTree.h"

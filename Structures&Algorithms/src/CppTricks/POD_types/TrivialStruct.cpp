@@ -63,29 +63,21 @@ namespace NotTrivial {
 struct NonTrivialBase {
 public:
     // Trivial structure cannot contain virtual function
-    virtual void anyVirtualFunction()
-    {
-    }
+    virtual void anyVirtualFunction() { }
 };
 
 struct NonTrivialDerived : public NonTrivialBase {
 public:
     // Trivial structure cannot contain virtual function
-    void anyVirtualFunction() override
-    {
-    }
+    void anyVirtualFunction() override { }
 };
 
 struct NonTrivial1 {
 public:
-    NonTrivial1()
-    {
-    }
+    NonTrivial1() { }
 
     // Trivial structure cannot contain virtual function
-    virtual void anyVirtualFunction()
-    {
-    }
+    virtual void anyVirtualFunction() { }
 
     int a;
     int b;
@@ -94,9 +86,7 @@ public:
 struct NonTrivial2 {
 public:
     // Trivial structure cannot contain user-defined constructor
-    NonTrivial2()
-    {
-    }
+    NonTrivial2() { }
 
     int a;
     int b;

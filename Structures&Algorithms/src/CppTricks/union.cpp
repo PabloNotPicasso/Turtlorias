@@ -24,17 +24,13 @@ private:
 // Full copy of PrivateTwin with public modifier
 class BadTwin {
 public:
-    BadTwin()
-    {
-    }
+    BadTwin() { }
     // public member
     int m_privateNumber;
 };
 
 union Twins {
-    Twins()
-    {
-    }
+    Twins() { }
     PrivateTwin priv;
     BadTwin bad;
 };
