@@ -46,6 +46,7 @@ function(add_structure LIBRARY)
 
     list(APPEND CMAKE_MESSAGE_INDENT "   ")
     build_library(${LIBRARY})
+    target_link_libraries(${LIBRARY} Logger)
     build_test(${LIBRARY})
     list(POP_BACK CMAKE_MESSAGE_INDENT)
 

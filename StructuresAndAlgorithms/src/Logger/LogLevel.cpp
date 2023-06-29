@@ -7,10 +7,10 @@
 namespace Logger {
 
 static const std::unordered_map<LogLevel, std::string_view> logLevelToStr{
-    {LogLevel::LOG_VERBOSE, "LOG_VERBOSE"},
-    {LogLevel::LOG_INFO, "LOG_INFO"},
-    {LogLevel::LOG_ERROR, "LOG_ERROR"},
-    {LogLevel::LOG_FATAL, "LOG_FATAL"}};
+    {LogLevel::LOG_VERBOSE, "VRB"},
+    {LogLevel::LOG_INFO, "INF"},
+    {LogLevel::LOG_ERROR, "ERR"},
+    {LogLevel::LOG_FATAL, "FAT"}};
 
 std::ostream& operator<<(std::ostream& os, LogLevel logLevel)
 {
