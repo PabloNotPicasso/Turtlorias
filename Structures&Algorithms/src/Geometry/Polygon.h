@@ -16,8 +16,8 @@ public:
     double area() const
     {
         double ans = 0;
-        for (int idxCurrent = 0; idxCurrent < vertices.size(); ++idxCurrent) {
-            int idxNext = (idxCurrent + 1) % vertices.size();
+        for (size_t idxCurrent = 0; idxCurrent < vertices.size(); ++idxCurrent) {
+            size_t idxNext = (idxCurrent + 1) % vertices.size();
             Vector currentV({0, 0}, vertices[idxCurrent]);
             Vector nextV({0, 0}, vertices[idxNext]);
 
@@ -35,9 +35,9 @@ public:
 
         double previousProd = Vector::vectorProduct(currentV, nextV);
 
-        for (int idxCurrent = 1; sameSign && idxCurrent < vertices.size(); ++idxCurrent) {
-            int idxNext = (idxCurrent + 1) % vertices.size();
-            int idxNextNext = (idxNext + 1) % vertices.size();
+        for (size_t idxCurrent = 1; sameSign && idxCurrent < vertices.size(); ++idxCurrent) {
+            size_t idxNext = (idxCurrent + 1) % vertices.size();
+            size_t idxNextNext = (idxNext + 1) % vertices.size();
 
             currentV = Vector(vertices[idxCurrent], vertices[idxNext]);
             nextV = Vector(vertices[idxNext], vertices[idxNextNext]);
@@ -67,8 +67,8 @@ private:
         bool sameSign = true;
         int previousSign = 0;
 
-        for (int idxCurrent = 0; sameSign && idxCurrent < vertices.size(); ++idxCurrent) {
-            int idxNext = (idxCurrent + 1) % vertices.size();
+        for (size_t idxCurrent = 0; sameSign && idxCurrent < vertices.size(); ++idxCurrent) {
+            size_t idxNext = (idxCurrent + 1) % vertices.size();
 
             Vector currentV = Vector(p, vertices[idxCurrent]);
             Vector nextV = Vector(p, vertices[idxNext]);
@@ -92,9 +92,9 @@ private:
 
             // cout << "Ray: " << ray.start << " " << ray.direction << endl;
 
-            int intersectionCnt = 0;
-            for (int i = 0; i < vertices.size(); ++i) {
-                int nextIdx = (i + 1) % vertices.size();
+            size_t intersectionCnt = 0;
+            for (size_t i = 0; i < vertices.size(); ++i) {
+                size_t nextIdx = (i + 1) % vertices.size();
                 bool isIntersected
                     = Segment::areIntersected(Segment(vertices[i], vertices[nextIdx]), ray);
                 intersectionCnt += isIntersected;
