@@ -1,6 +1,7 @@
 add_subdirectory(Algorithms)
 add_subdirectory(Structures)
 add_subdirectory(Logger)
+add_subdirectory(CppTricks/FastPIMPL)
 
 set(SRC "main.cpp")
 set(LIBS
