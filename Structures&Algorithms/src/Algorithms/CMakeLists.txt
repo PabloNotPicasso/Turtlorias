@@ -1,5 +1,5 @@
 set(TARGET Algorithms)
-set(SRC "Algorithms.cpp")
+set(SRC "AlgorithmsSandbox.cpp")
 
 add_library(${TARGET} ${SRC})
 
