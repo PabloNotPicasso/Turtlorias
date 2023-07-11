@@ -4,7 +4,9 @@ RUN apt-get update && \
     apt-get install -y \
     cmake \
     git \
+    cppcheck \
     clang-format \
+    clang-tidy \
     python3 python3-pip \
     libboost-dev libboost-program-options-dev libboost-log-dev
 

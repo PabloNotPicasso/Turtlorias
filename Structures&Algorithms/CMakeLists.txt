@@ -8,6 +8,7 @@ include(SetUp)
 include(CodeFormatting)
 include(Macro)
 include(AddGoogleTest)
+include(StaticAnalysis)
 
 include_directories(src)
 add_subdirectory(src)

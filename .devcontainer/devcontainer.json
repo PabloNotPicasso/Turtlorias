@@ -15,7 +15,12 @@
 		"ms-vscode.cpptools-themes",
 		"ms-vscode.cmake-tools",
 		"ms-vscode.cpptools-extension-pack",
-		"ms-vscode.cpptools"
+		"ms-vscode.cpptools",
+		"jeff-hykin.better-cpp-syntax",
+		"cschlosser.doxdocgen",
+		"jebbs.plantuml",
+		"Maarti.jenkins-doc",
+		"twxs.cmake"
 	]
 
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
