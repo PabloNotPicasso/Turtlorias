@@ -20,15 +20,19 @@ if(NOT RUN_CLANG_TIDY_PATH)
     message(FATAL_ERROR "No program 'run-clang-tidy.py' found")
 endif()
 
+configure_file(
+    ${CMAKE_SOURCE_DIR}/cmake_modules/cppcheck/cppcheck-suppressions.txt.in
+    ${CMAKE_BINARY_DIR}/cppcheck-suppressions.txt
+)
+
 add_custom_command(
     OUTPUT cppcheck-result.xml
     COMMAND
         ${CPPCHECK_PATH} --quiet --enable=warning,performance,portability,information,missingInclude
-        --language=c++ --xml --xml-version=2 --suppress=missingInclude
-        --suppress=unmatchedSuppression
+        --language=c++ --xml --xml-version=2
         --suppressions-list=${CMAKE_BINARY_DIR}/cppcheck-suppressions.txt
         -i ${CMAKE_BINARY_DIR}
-        "${CMAKE_SOURCE_DIR}"
+        ${CMAKE_SOURCE_DIR}
         --project=${CMAKE_BINARY_DIR}/compile_commands.json 2>
         ${CMAKE_BINARY_DIR}/cppcheck-result.xml
     COMMENT "Analyzing code by 'cppcheck'"
