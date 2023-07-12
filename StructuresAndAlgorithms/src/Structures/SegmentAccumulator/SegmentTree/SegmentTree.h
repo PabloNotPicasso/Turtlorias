@@ -7,7 +7,7 @@ template<typename ValueType>
 class SegmentTree : public ISegmentAccumulator<ValueType> {
 public:
     using AccumulateFunction = typename ISegmentAccumulator<ValueType>::AccumulateFunction;
-    SegmentTree();
+    SegmentTree() = default;
     virtual ~SegmentTree() = default;
 
     void init(
@@ -15,9 +15,9 @@ public:
         const AccumulateFunction& accumulateFunction,
         const ValueType& zerro) override;
 
-    ValueType get(const int& l, const int& r) const override;
+    ValueType get(size_t l, size_t r) const override;
 
-    void update(const int& index, const ValueType& newValue) override;
+    void update(size_t index, const ValueType& newValue) override;
 
     bool isBuilt() const override;
 
@@ -26,23 +26,17 @@ private:
 
     void buildTreeRecurse(const std::vector<ValueType>& array, int lPoint, int rPoint, int v);
     ValueType getRecurse(const int lSegment, const int rSegment, int lTree, int rTree, int v) const;
-    void updateRecurse(const int& index, const ValueType& newValue, int lTree, int rTree, int v);
+    void updateRecurse(size_t index, const ValueType& newValue, int lTree, int rTree, int v);
 
 private:
-    bool m_isBuilt;
+    bool m_isBuilt = false;
+    ValueType m_zerro = 0;
+    size_t m_elementCnt = 0;
     AccumulateFunction m_accumulate;
-    ValueType m_zerro;
-    int m_elementCnt;
     std::vector<ValueType> m_tree;
 };
 
 // Implementation
-template<typename ValueType>
-SegmentTree<ValueType>::SegmentTree()
-    : m_isBuilt(false)
-{
-}
-
 template<typename ValueType>
 void SegmentTree<ValueType>::init(
     const std::vector<ValueType>& array,
@@ -61,13 +55,13 @@ bool SegmentTree<ValueType>::isBuilt() const
 }
 
 template<typename ValueType>
-ValueType SegmentTree<ValueType>::get(const int& l, const int& r) const
+ValueType SegmentTree<ValueType>::get(size_t l, size_t r) const
 {
     return getRecurse(l, r, 0, m_elementCnt - 1, 1);
 }
 
 template<typename ValueType>
-void SegmentTree<ValueType>::update(const int& index, const ValueType& newValue)
+void SegmentTree<ValueType>::update(size_t index, const ValueType& newValue)
 {
     updateRecurse(index, newValue, 0, m_elementCnt - 1, 1);
 }
@@ -120,15 +114,15 @@ ValueType SegmentTree<ValueType>::getRecurse(
 
 template<typename ValueType>
 void SegmentTree<ValueType>::updateRecurse(
-    const int& index, const ValueType& newValue, int lTree, int rTree, int v)
+    size_t index, const ValueType& newValue, int lTree, int rTree, int v)
 {
     if (lTree == rTree) {
         m_tree[v] = newValue;
         return;
     }
-    int mid = (lTree + rTree) / 2;
-    int leftTreeVertex = v * 2;
-    int rightTreeVertex = v * 2 + 1;
+    size_t mid = (lTree + rTree) / 2;
+    size_t leftTreeVertex = v * 2;
+    size_t rightTreeVertex = v * 2 + 1;
     if (index <= mid) {
         updateRecurse(index, newValue, lTree, mid, leftTreeVertex);
     } else {

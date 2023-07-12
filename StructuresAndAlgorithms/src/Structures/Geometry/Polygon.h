@@ -4,11 +4,15 @@
 #include "Ray.h"
 #include "Segment.h"
 
+#include <vector>
+
 class Polygon {
 public:
-    std::vector<Point> vertices;
-
-    Polygon(std::vector<Point> vert)
+    Polygon(const std::vector<Point>& vert)
+        : vertices(vert)
+    {
+    }
+    Polygon(std::vector<Point>&& vert)
         : vertices(vert)
     {
     }
@@ -118,9 +122,13 @@ private:
 
         return ans;
     }
+
+private:
+    std::vector<Point> vertices;
+    friend std::ostream& operator<<(std::ostream& os, const Polygon& pol);
 };
 
-std::ostream& operator<<(std::ostream& os, const Polygon pol)
+std::ostream& operator<<(std::ostream& os, const Polygon& pol)
 {
     os << "Polygon: [" << pol.vertices.size() << "]\n";
     for (auto i : pol.vertices)

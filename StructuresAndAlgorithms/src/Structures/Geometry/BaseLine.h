@@ -82,7 +82,7 @@ public:
         return line;
     }
 
-    static Point intersection(const BaseLine l1, const BaseLine l2)
+    static Point intersection(const BaseLine& l1, const BaseLine& l2)
     {
         double determ = l1.A * l2.B - l2.A * l1.B;
         double determ_x = -l1.C * l2.B + l2.C * l1.B;
@@ -105,7 +105,7 @@ std::istream& operator>>(std::istream& is, BaseLine& line)
     return is;
 }
 
-std::ostream& operator<<(std::ostream& os, const BaseLine line)
+std::ostream& operator<<(std::ostream& os, const BaseLine& line)
 {
     os << "BaseLine { " << line.A << "x + " << line.B << "y + " << line.C << " }";
     return os;

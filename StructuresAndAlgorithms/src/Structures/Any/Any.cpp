@@ -1,6 +1,6 @@
 #include "Any.h"
 
-#include <bits/stdc++.h>
+#include <string>
 
 using namespace std;
 
@@ -8,8 +8,8 @@ namespace Structures {
 
 Any::Any()
     : ind(typeid(nullptr))
+    , ptr(nullptr)
 {
-    ptr = nullptr;
 }
 
 Any::~Any()

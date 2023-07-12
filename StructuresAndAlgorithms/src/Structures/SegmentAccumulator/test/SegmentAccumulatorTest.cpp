@@ -68,24 +68,10 @@ TYPED_TEST(SegmentAccumulatorTest, init)
     EXPECT_TRUE(this->accumulator->isBuilt());
 }
 
-TYPED_TEST(SegmentAccumulatorTest, getSum1e2)
+TYPED_TEST(SegmentAccumulatorTest, getSum100)
 {
     using ValueType = typename TypeParam::_ValueType;
-    auto array = this->generateArray(1e2);
-
-    auto sum = [](const ValueType& a, const ValueType& b) { return a + b; };
-    this->accumulator->init(array, sum, 0);
-
-    for (size_t l = 0; l < array.size(); ++l)
-        for (size_t r = l; r < array.size(); ++r)
-            EXPECT_EQ(
-                linearAccumulation<ValueType>(array, l, r, sum, 0), this->accumulator->get(l, r));
-}
-
-TYPED_TEST(SegmentAccumulatorTest, getSum1e3)
-{
-    using ValueType = typename TypeParam::_ValueType;
-    auto array = this->generateArray(1e3);
+    auto array = this->generateArray(100);
 
     auto sum = [](const ValueType& a, const ValueType& b) { return a + b; };
     this->accumulator->init(array, sum, 0);

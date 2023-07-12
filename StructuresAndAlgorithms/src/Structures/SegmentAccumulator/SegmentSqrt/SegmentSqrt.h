@@ -9,7 +9,7 @@ template<typename ValueType>
 class SegmentSqrt : public ISegmentAccumulator<ValueType> {
 public:
     using AccumulateFunction = typename ISegmentAccumulator<ValueType>::AccumulateFunction;
-    SegmentSqrt();
+    SegmentSqrt() = default;
     virtual ~SegmentSqrt() = default;
 
     void init(
@@ -17,9 +17,9 @@ public:
         const AccumulateFunction& accumulateFunction,
         const ValueType& zerro) override;
 
-    ValueType get(const int& l, const int& r) const override;
+    ValueType get(size_t l, size_t r) const override;
 
-    void update(const int& index, const ValueType& newValue) override;
+    void update(size_t index, const ValueType& newValue) override;
 
     bool isBuilt() const override;
 
@@ -27,21 +27,15 @@ private:
     void buildBlocks();
 
 private:
-    bool m_isBuilt;
+    bool m_isBuilt = false;
+    size_t m_blockLen = 0;
+    ValueType m_zerro = 0;
     AccumulateFunction m_accumulate;
-    ValueType m_zerro;
     std::vector<ValueType> m_array;
     std::vector<ValueType> m_blocks;
-    int m_blockLen;
 };
 
 // Implementation
-template<typename ValueType>
-SegmentSqrt<ValueType>::SegmentSqrt()
-    : m_isBuilt(false)
-{
-}
-
 template<typename ValueType>
 void SegmentSqrt<ValueType>::init(
     const std::vector<ValueType>& array,
@@ -62,10 +56,10 @@ bool SegmentSqrt<ValueType>::isBuilt() const
 }
 
 template<typename ValueType>
-ValueType SegmentSqrt<ValueType>::get(const int& l, const int& r) const
+ValueType SegmentSqrt<ValueType>::get(size_t l, size_t r) const
 {
     ValueType accumulation = m_zerro;
-    for (int i = l; i <= r;) {
+    for (size_t i = l; i <= r;) {
         // If current element is start of a block and full block is in range
         if (i % m_blockLen == 0 && i + m_blockLen - 1 <= r) {
             // Adding block
@@ -81,7 +75,7 @@ ValueType SegmentSqrt<ValueType>::get(const int& l, const int& r) const
 }
 
 template<typename ValueType>
-void SegmentSqrt<ValueType>::update(const int& index, const ValueType& newValue)
+void SegmentSqrt<ValueType>::update(size_t index, const ValueType& newValue)
 {
     auto& blockToChange = m_blocks[index / m_blockLen];
     m_array[index] = newValue;

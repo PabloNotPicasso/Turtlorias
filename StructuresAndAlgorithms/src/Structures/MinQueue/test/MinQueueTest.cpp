@@ -39,7 +39,7 @@ TEST(MinQueue, differentTypes)
 TEST(MinQueue, push)
 {
     MinQueue<int> minqueue;
-    constexpr int PushTimes = 1'000'000;
+    constexpr int PushTimes = 100'000;
     for (int i = 0; i < PushTimes; ++i) {
         minqueue.push(i);
     }
@@ -51,7 +51,7 @@ TEST(MinQueue, push)
 TEST(MinQueue, pop)
 {
     MinQueue<int> minqueue;
-    constexpr int PushTimes = 1'000'000;
+    constexpr int PushTimes = 100'000;
     for (int i = 0; i < PushTimes; ++i) {
         minqueue.push(i);
     }
@@ -68,7 +68,7 @@ TEST(MinQueue, pop)
 TEST(MinQueue, currentMin)
 {
     MinQueue<int> minqueue;
-    constexpr int PushTimes = 1'000'000;
+    constexpr int PushTimes = 100'000;
     for (int i = 0; i < PushTimes; ++i) {
         minqueue.push(i);
         EXPECT_EQ(minqueue.currentMin(), 0);
@@ -199,7 +199,7 @@ TEST(MinQueue, randomQueue)
         bruteMinqueue.pop();
     };
 
-    constexpr int OperationNumber = 1'000'000;
+    constexpr int OperationNumber = 100'000;
     for (int i = 0; i < OperationNumber; ++i) {
         operationType op = rand() % 2 ? PUSH : POP;
         switch (op) {

@@ -43,7 +43,7 @@ public:
         return start_to_p.len() * fabs(Vector::sinBetween(start_to_end, start_to_p));
     }
 
-    static bool areIntersected(const Segment a, const Segment b)
+    static bool areIntersected(const Segment& a, const Segment& b)
     {
         Vector aVec(a.start, a.end);
         Vector bVec(b.start, b.end);
@@ -61,7 +61,7 @@ public:
         return areOnDifferentSides || belongToEachOther;
     }
 
-    static bool areIntersected(const Segment a, const Ray ray)
+    static bool areIntersected(const Segment& a, const Ray& ray)
     {
         Vector rayVec(ray.start, ray.direction);
 
@@ -78,7 +78,7 @@ public:
         return (pointsAreOnDifferentSides && angleCheck) || belongToEachOther;
     }
 
-    static double distance(const Segment a, const Segment b)
+    static double distance(const Segment& a, const Segment& b)
     {
         if (areIntersected(a, b)) {
             return 0;
@@ -91,7 +91,7 @@ public:
     }
 };
 
-std::ostream& operator<<(std::ostream& os, const Segment seg)
+std::ostream& operator<<(std::ostream& os, const Segment& seg)
 {
     os << "Segment[" << seg.start << ", " << seg.end << "]";
     return os;

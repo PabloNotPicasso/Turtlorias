@@ -248,16 +248,11 @@ public:
     {
         return 0 == vectorProduct(lhs, rhs);
     }
+
+    static Vector getRandom(int l, int r)
+    {
+        Vector::coordinate_t x = Helpers::getRandom<Vector::coordinate_t>(l, r);
+        Vector::coordinate_t y = Helpers::getRandom<Vector::coordinate_t>(l, r);
+        return Vector(x, y);
+    }
 };
-
-namespace Helpers {
-
-template<>
-Vector getRandom(int l, int r)
-{
-    Vector::coordinate_t x = getRandom<Vector::coordinate_t>(l, r);
-    Vector::coordinate_t y = getRandom<Vector::coordinate_t>(l, r);
-    return Vector(x, y);
-}
-
-} // namespace Helpers

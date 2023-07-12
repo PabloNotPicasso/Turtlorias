@@ -1,5 +1,7 @@
 #pragma once
+#include <cstddef>
 #include <functional>
+#include <vector>
 
 template<typename ValueType>
 class ISegmentAccumulator {
@@ -29,7 +31,7 @@ public:
      * @param r right border
      * @return resault of accumulation on a segment [l,r]. accumulateFunction(l,l+1,...,r)
      */
-    virtual ValueType get(const int& l, const int& r) const = 0;
+    virtual ValueType get(size_t l, size_t r) const = 0;
 
     /**
      * @brief Change element by newValue
@@ -37,7 +39,7 @@ public:
      * @param index number of value to change
      * @param newValue new value
      */
-    virtual void update(const int& index, const ValueType& newValue) = 0;
+    virtual void update(size_t index, const ValueType& newValue) = 0;
 
     /**
      * @brief Returns True if segment accumulator was initialized

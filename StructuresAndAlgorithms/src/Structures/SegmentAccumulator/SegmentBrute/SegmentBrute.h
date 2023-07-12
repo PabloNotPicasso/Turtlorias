@@ -18,9 +18,9 @@ public:
         const AccumulateFunction& accumulateFunction,
         const ValueType& zerro) override;
 
-    ValueType get(const int& l, const int& r) const override;
+    ValueType get(size_t l, size_t r) const override;
 
-    void update(const int& index, const ValueType& newValue) override;
+    void update(size_t index, const ValueType& newValue) override;
 
     bool isBuilt() const override;
 
@@ -57,7 +57,7 @@ bool SegmentBrute<ValueType>::isBuilt() const
 }
 
 template<typename ValueType>
-ValueType SegmentBrute<ValueType>::get(const int& l, const int& r) const
+ValueType SegmentBrute<ValueType>::get(size_t l, size_t r) const
 {
     ValueType accumulation
         = std::accumulate(m_array.begin() + l, m_array.begin() + r + 1, m_zerro, m_accumulate);
@@ -65,7 +65,7 @@ ValueType SegmentBrute<ValueType>::get(const int& l, const int& r) const
 }
 
 template<typename ValueType>
-void SegmentBrute<ValueType>::update(const int& index, const ValueType& newValue)
+void SegmentBrute<ValueType>::update(size_t index, const ValueType& newValue)
 {
     m_array[index] = newValue;
 }
