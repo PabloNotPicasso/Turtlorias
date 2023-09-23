@@ -1,4 +1,4 @@
-#include "Structures/SharedPointer/SharedPointer.h"
+#include "Structures/STL/SharedPointer/SharedPointer.h"
 
 #include <gtest/gtest.h>
 

@@ -1,4 +1,4 @@
-#include "Structures/BoolVector/BoolVector.h"
+#include "Structures/STL/BoolVector/BoolVector.h"
 
 #include <gtest/gtest.h>
 

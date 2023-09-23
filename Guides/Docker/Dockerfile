@@ -7,11 +7,9 @@ RUN apt-get update && \
     cppcheck \
     clang-format \
     clang-tidy \
-    python3 python3-pip \
+    python3 python3-pip python3-setuptools python3-wheel \
     libboost-dev libboost-program-options-dev libboost-log-dev
 
-RUN apt-get install python3-setuptools
-RUN apt-get install python3-wheel
 RUN apt-get upgrade -y
 
 ###########################

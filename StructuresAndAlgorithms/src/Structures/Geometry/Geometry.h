@@ -1,3 +1,5 @@
+#pragma once
+
 #include "BaseLine.h"
 #include "Point.h"
 #include "Polygon.h"

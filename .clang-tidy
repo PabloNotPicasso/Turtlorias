@@ -1,0 +1,87 @@
+Checks:         'portability-*,
+                readability-*,
+                readability-identifier-naming'
+# Disabled checks:
+#                -*,
+#                clang-diagnostic-*,
+#                clang-analyzer-*,                
+#                -clang-analyzer-alpha*,
+#                cppcoreguidelines-*,
+#                -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+#                -cppcoreguidelines-pro-type-vararg,
+#                -cppcoreguidelines-pro-type-cstyle-cast,
+#                -cppcoreguidelines-special-member-functions,
+#                cert-*,
+#                hicpp-*,
+#                -hicpp-special-member-functions,
+#                -hicpp-no-array-decay,
+#                -hicpp-vararg,
+#                -hicpp-signed-bitwise,
+#                misc-*,
+#                modernize-*,
+#                bugprone-*,
+#                performance-*,
+
+# - cppcoreguidelines-pro-type-vararg: Unavoidable when using c-style gst functions (gstreamer pipeline)
+# - cppcoreguidelines-pro-type-cstyle-cast: Unavoidable when using c-style gst functions (gstreamer pipeline)
+# - cppcoreguidelines-special-member-functions: We allow default for small classes
+# - hicpp-special-member-functions: We allow default for small classes
+# - hicpp-no-array-decay: Detects implicit decay of array into pointer
+# - hicpp-vararg: Unavoidable when using c-style gst functions (gstreamer pipeline).
+# - hicpp-signed-bitwise: Unavoidable when using c-style gst functions (gstreamer pipeline).
+
+UseColor: ''
+WarningsAsErrors: 'true'
+CheckOptions:
+  - key: readability-identifier-naming.InlineNamespaceCase
+    value: CamelCase
+  - key: readability-identifier-naming.NamespaceCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.ConstexprVariableCase
+    value: camelBack
+  - key: readability-identifier-naming.PrivateMemberCase
+    value: camelBack
+  - key: readability-identifier-naming.PrivateMemberPrefix
+    value: m_
+  - key: readability-identifier-naming.ProtectedMemberCase
+    value: camelBack
+  - key: readability-identifier-naming.ProtectedMemberPrefix
+    value: m_
+  - key: readability-identifier-naming.PublicMemberCase
+    value: camelBack
+  - key: readability-identifier-naming.ClassConstantCase
+    value: camelBack
+  - key: readability-identifier-naming.ClassConstantPrefix
+    value: s_
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.GlobalVariableCase
+    value: camelBack
+  - key: readability-identifier-naming.LocalConstantCase
+    value: camelBack
+  - key: readability-identifier-naming.LocalVariableCase
+    value: camelBack
+  - key: readability-identifier-naming.StaticConstantCase
+    value: camelBack
+  - key: readability-identifier-naming.StaticVariableCase
+    value: camelBack
+  - key: readability-identifier-naming.ParameterCase
+    value: camelBack
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.UnionCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: camelBack
+  - key: readability-identifier-naming.MethodCase
+    value: camelBack
+  - key: readability-identifier-naming.TypedefCase
+    value: CamelCase
+  - key: readability-identifier-naming.TemplateParameterCase
+    value: CamelCase

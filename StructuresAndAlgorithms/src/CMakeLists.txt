@@ -6,9 +6,17 @@ add_subdirectory(CppTricks/FastPIMPL)
 set(SRC "main.cpp")
 set(LIBS
     Algorithms
-    Structures::Any
-    Structures::BoolVector
-    Structures::SharedPointer
+    Structures::Geometry
+    Structures::Mediator
+    Structures::MinQueue
+    Structures::SegmentSqrt
+    Structures::SegmentBrute
+    Structures::SegmentTree
+    Structures::STL::Any
+    Structures::STL::BoolVector
+    Structures::STL::SharedPointer
+    Structures::STL::String
+    Structures::STL::Vector
 )
 
 add_executable(${PROJECT_NAME} ${SRC})
