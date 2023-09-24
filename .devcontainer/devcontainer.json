@@ -10,18 +10,21 @@
 	"dockerFile": "../Guides/Docker/Dockerfile",
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
-	"extensions": [
-		"ms-vscode.cpptools-themes",
-		"ms-vscode.cmake-tools",
-		"ms-vscode.cpptools-extension-pack",
-		"ms-vscode.cpptools",
-		"jeff-hykin.better-cpp-syntax",
-		"cschlosser.doxdocgen",
-		"jebbs.plantuml",
-		"Maarti.jenkins-doc",
-		"twxs.cmake"
-	]
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools-themes",
+                "ms-vscode.cmake-tools",
+                "ms-vscode.cpptools-extension-pack",
+                "ms-vscode.cpptools",
+                "jeff-hykin.better-cpp-syntax",
+                "cschlosser.doxdocgen",
+                "jebbs.plantuml",
+                "Maarti.jenkins-doc",
+                "twxs.cmake"
+            ]
+        }
+    }
 
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
 	// "postCreateCommand": "apt-get update && apt-get install -y curl",
