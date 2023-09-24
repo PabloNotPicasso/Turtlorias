@@ -1,49 +1,6 @@
-#include "Structures/STL/String/String.h"
+#include "StringTestFixture.h"
 
-#include <gtest/gtest.h>
-
-using namespace Structures;
-
-class StringTest : public testing::Test {
-protected:
-    void SetUp() override { }
-};
-
-TEST_F(StringTest, creation_empty)
-{
-    String str;
-
-    EXPECT_EQ(str.size(), 0);
-}
-
-TEST_F(StringTest, creation_constructing)
-{
-    size_t size = 10;
-    String str(size);
-
-    EXPECT_EQ(str.size(), size);
-    EXPECT_EQ(str.capacity(), size);
-
-    for (size_t i = 0; i < str.size(); ++i) {
-        EXPECT_EQ(str[i], String::nullTerminate);
-        EXPECT_EQ(str.at(i), String::nullTerminate);
-    }
-}
-
-TEST_F(StringTest, creation_copy)
-{
-    char toFill = 'a';
-    size_t newSize = 10;
-    String str(newSize, toFill);
-
-    for (size_t i = 0; i < str.size(); ++i) {
-        EXPECT_EQ(str[i], toFill);
-        EXPECT_EQ(str.at(i), toFill);
-    }
-
-    EXPECT_EQ(str.size(), newSize);
-    EXPECT_EQ(str.capacity(), newSize);
-}
+class StringTest : public StringTestFixture { };
 
 TEST_F(StringTest, reserve)
 {
@@ -125,4 +82,17 @@ TEST_F(StringTest, insert)
     for (size_t i = insertPosition + 1; i < newSize; ++i) {
         EXPECT_EQ(str[i], toFill);
     }
+}
+
+TEST_F(StringTest, rangeBasedFor)
+{
+    const String str = "0123456789";
+
+    String accumulator;
+
+    for (auto c : str) {
+        accumulator.push_back(c);
+    }
+
+    EXPECT_EQ(accumulator, str);
 }
