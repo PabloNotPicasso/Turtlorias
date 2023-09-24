@@ -1,0 +1,6 @@
+include(CTest)
+include(SetUp)
+include(CodeFormatting)
+include(Macro)
+include(AddGoogleTest)
+include(StaticAnalysis)

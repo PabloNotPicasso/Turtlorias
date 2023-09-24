@@ -1,7 +1,7 @@
 add_subdirectory(Algorithms)
-add_subdirectory(Structures)
-add_subdirectory(Logger)
 add_subdirectory(CppTricks/FastPIMPL)
+add_subdirectory(Logger)
+add_subdirectory(Structures)
 
 set(SRC "main.cpp")
 set(LIBS
@@ -9,9 +9,7 @@ set(LIBS
     Structures::Geometry
     Structures::Mediator
     Structures::MinQueue
-    Structures::SegmentSqrt
-    Structures::SegmentBrute
-    Structures::SegmentTree
+    Structures::SegmentAccumulator
     Structures::STL::Any
     Structures::STL::BoolVector
     Structures::STL::SharedPointer

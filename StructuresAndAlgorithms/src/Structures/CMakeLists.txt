@@ -1,11 +1,8 @@
 set(PACKAGE Structures)
 
-add_subdirectory(SegmentAccumulator)
 add_subdirectory(Geometry)
 add_subdirectory(STL)
 
-build_library(Mediator)
-build_library(MinQueue)
-
-build_test(Mediator)
-build_test(MinQueue)
+add_structure(Mediator)
+add_structure(MinQueue)
+add_structure(SegmentAccumulator)

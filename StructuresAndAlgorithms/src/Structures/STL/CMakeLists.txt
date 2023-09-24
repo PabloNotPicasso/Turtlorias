@@ -1,13 +1,7 @@
 set(PACKAGE ${PACKAGE}::STL)
 
-build_library(Any)
-build_library(BoolVector)
-build_library(SharedPointer)
-build_library(String)
-build_library(Vector)
-
-build_test(Any)
-build_test(BoolVector)
-build_test(SharedPointer)
-build_multitest(String)
-build_test(Vector)
+add_structure(Any)
+add_structure(BoolVector)
+add_structure(SharedPointer)
+add_structure(String)
+add_structure(Vector)
