@@ -17,16 +17,19 @@ public:
     using size_type = size_t;
     using byte = int8_t;
 
+    using iterator = pointer;
+    using const_iterator = const_pointer;
+
 public:
     Vector()
-        : _begin(reinterpret_cast<T*>(new byte[sizeof(T)]))
+        : _begin(createArray(1U))
         , _size(0)
         , _capacity(1)
     {
     }
 
     explicit Vector(size_type count)
-        : _begin(reinterpret_cast<T*>(new byte[count * sizeof(T)]))
+        : _begin(createArray(count))
         , _size(count)
         , _capacity(count)
     {
@@ -36,16 +39,13 @@ public:
                 new (toCreateIt) T();
             }
         } catch (...) {
-            for (pointer toDeleteIt = _begin; toDeleteIt != toCreateIt; ++toDeleteIt) {
-                toDeleteIt->~T();
-            }
-            delete[] reinterpret_cast<byte*>(_begin);
+            freeArray(_begin, toCreateIt - _begin);
             throw;
         }
     }
 
     Vector(size_type count, const value_type& value)
-        : _begin(reinterpret_cast<T*>(new byte[count * sizeof(T)]))
+        : _begin(createArray(count))
         , _size(count)
         , _capacity(count)
     {
@@ -55,12 +55,77 @@ public:
                 new (toCreateIt) T(value);
             }
         } catch (...) {
-            for (pointer toDeleteIt = _begin; toDeleteIt != toCreateIt; ++toDeleteIt) {
-                toDeleteIt->~T();
-            }
-            delete[] reinterpret_cast<byte*>(_begin);
+            freeArray(_begin, toCreateIt - _begin);
             throw;
         }
+    }
+
+    Vector(const Vector& toCopy)
+    {
+        auto newArray = createArray(toCopy.size());
+
+        pointer toCreateIt = newArray;
+        try {
+            for (pointer toCopyIt = toCopy._begin; toCopyIt != toCopy.end();
+                 ++toCopyIt, ++toCreateIt) {
+                new (toCreateIt) T(*toCopyIt);
+            }
+        } catch (...) {
+            freeArray(newArray, toCreateIt - newArray);
+            throw;
+        }
+        _begin = newArray;
+        _size = toCopy.size();
+        _capacity = _size;
+    }
+
+    Vector(Vector&& toMove)
+    {
+        _begin = toMove._begin;
+        _size = toMove._size;
+        _capacity = toMove._capacity;
+
+        toMove._begin = nullptr;
+        toMove._size = 0;
+        toMove._capacity = 0;
+    }
+
+    explicit Vector(std::initializer_list<T> iList)
+    {
+        auto newArray = createArray(iList.size());
+
+        pointer toCreateIt = newArray;
+        try {
+            for (auto ilIt = iList; ilIt != iList.end(); ++ilIt, ++toCreateIt) {
+                new (toCreateIt) T(*ilIt);
+            }
+        } catch (...) {
+            freeArray(newArray, toCreateIt - newArray);
+            throw;
+        }
+        _begin = newArray;
+        _size = iList.size();
+        _capacity = _size;
+    }
+
+    Vector& operator=(const Vector& toCopy)
+    {
+        Vector copy(toCopy);
+        swap(copy);
+        return *this;
+    }
+
+    Vector& operator=(Vector&& toMove)
+    {
+        swap(toMove);
+        return *this;
+    }
+
+    Vector& operator=(std::initializer_list<T> iList)
+    {
+        Vector toCopy(iList);
+        swap(toCopy);
+        return *this;
     }
 
     ~Vector()
@@ -254,7 +319,7 @@ public:
         }
 
         auto newCapacity = _capacity * 2;
-        T* newArr = reinterpret_cast<T*>(new byte[newCapacity * sizeof(T)]);
+        T* newArr = createArray(newCapacity);
         size_t originalIdx = 0;
         size_t newArrayIdx = 0;
         for (; originalIdx < idx; ++newArrayIdx) {
@@ -319,10 +384,74 @@ public:
         return _capacity;
     }
 
+    iterator begin() noexcept
+    {
+        return _begin;
+    }
+    const_iterator begin() const noexcept
+    {
+        return _begin;
+    }
+
+    iterator end() noexcept
+    {
+        return _begin + _size;
+    }
+    const_iterator end() const noexcept
+    {
+        return _begin + _size;
+    }
+
+    /**
+     * @brief Clears vector calling destructors for elements. Allocated data will not be released
+     */
+    void clear()
+    {
+        deleteElements(_begin, _size);
+        _size = 0;
+    }
+
+    /**
+     * @brief Reduces \b capacity to \b size
+     * @note Invalidates pointers/references
+     */
+    void shrink_to_fit()
+    {
+        if (_size == _capacity) {
+            return;
+        }
+        auto shrinkedCopy = makeExtendedCopy(_begin, _size, _size);
+        freeArray(_begin, _size);
+
+        _begin = shrinkedCopy;
+        _capacity = _size;
+    }
+
+    /**
+     * @brief Swap all data members to \p toSwap
+     *
+     * @param toSwap
+     */
+    void swap(Vector& toSwap) noexcept
+    {
+        std::swap(_begin, toSwap._begin);
+        std::swap(_size, toSwap._size);
+        std::swap(_capacity, toSwap._capacity);
+    }
+
 protected:
+    /**
+     * @brief Create copy of \p array which contains \p extendedCapacity elements
+     * First \p currentSize elements will be copied from \p array
+     *
+     * @param array
+     * @param currentSize
+     * @param extendedCapacity
+     * @return T*
+     */
     T* makeExtendedCopy(pointer array, size_type currentSize, size_type extendedCapacity)
     {
-        T* newArr = reinterpret_cast<T*>(new byte[extendedCapacity * sizeof(T)]);
+        T* newArr = createArray(extendedCapacity);
 
         size_type idxToCopy = 0;
         try {
@@ -330,21 +459,56 @@ protected:
                 new (newArr + idxToCopy) T(array[idxToCopy]);
             }
         } catch (...) {
-            for (size_type idxToDelete = 0; idxToDelete < idxToCopy; ++idxToDelete) {
-                newArr[idxToDelete].~T();
-            }
-            delete[] reinterpret_cast<byte*>(newArr);
+            freeArray(_begin, idxToCopy);
             throw;
         }
         return newArr;
     }
 
-    void freeArray(T* array, size_type size)
+    /**
+     * @brief Create a raw unintitialized array with \p size elements
+     *
+     * @param size
+     * @return T*
+     */
+    T* createArray(size_t size)
+    {
+        return reinterpret_cast<T*>(new byte[size * sizeof(T)]);
+    }
+
+    /**
+     * @brief Free allocated raw \p array without calling destructors
+     *
+     * @param array
+     */
+    void freeRawArray(T* array)
+    {
+        delete[] reinterpret_cast<byte*>(array);
+    }
+
+    /**
+     * @brief Call destructors for first \b size elements of \b array
+     *
+     * @param array
+     * @param size
+     */
+    void deleteElements(T* array, size_type size)
     {
         for (size_type idxToDelete = 0; idxToDelete < size; ++idxToDelete) {
             array[idxToDelete].~T();
         }
-        delete[] reinterpret_cast<byte*>(array);
+    }
+
+    /**
+     * @brief Free allocated \p array after calling destructors for first \p size elements
+     *
+     * @param array
+     * @param size
+     */
+    void freeArray(T* array, size_type size)
+    {
+        deleteElements(array, size);
+        freeRawArray(array);
     }
 
 private:
