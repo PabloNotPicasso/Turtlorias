@@ -28,57 +28,88 @@ String::String(size_type count, value_type value)
     memset(_begin, value, _size);
 }
 
-String::String(const value_type* array)
-    : _begin(new value_type[1])
-    , _size(0)
-    , _capacity(1)
+String::String(const value_type* arrayToCopy)
 {
-    for (size_t i = 0; array[i] != String::nullTerminate; ++i) {
-        push_back(array[i]);
-    }
+    _size = strlen(arrayToCopy);
+    _capacity = _size;
+    _begin = new value_type[_capacity];
+
+    memcpy(_begin, arrayToCopy, _capacity);
 }
 
-String::String(const std::initializer_list<value_type>& iList)
-    : _begin(new value_type[1])
+String::String(std::initializer_list<value_type> iList)
+    : _begin(new value_type[iList.size()])
     , _size(0)
-    , _capacity(1)
+    , _capacity(iList.size())
 {
-    reserve(iList.size());
-    for (auto i : iList) {
-        push_back(i);
+    for (auto iListElement : iList) {
+        push_back(iListElement);
     }
 }
 
 String::String(const String& toCopy)
+    // Size or capacity?
+    : _begin(new value_type[toCopy._size])
+    , _size(toCopy._size)
+    , _capacity(toCopy._capacity)
 {
-    *this = toCopy;
+    memcpy(_begin, toCopy._begin, _capacity);
 }
 
 String::String(String&& toMove)
+    : _begin(toMove._begin)
+    , _size(toMove._size)
+    , _capacity(toMove._capacity)
 {
-    *this = std::forward<String&&>(toMove);
+    toMove._begin = nullptr;
+    toMove._size = 0;
+    toMove._capacity = 0;
 }
 
 String& String::operator=(const String& toCopy)
 {
-    // Size or capacity?
-    _begin = new value_type[toCopy.capacity()];
-    _capacity = toCopy._capacity;
-    _size = toCopy._size;
-
-    memcpy(_begin, toCopy._begin, _capacity);
+    if (this == &toCopy) {
+        return *this;
+    }
+    clear();
+    reserve(toCopy.size());
+    for (auto toCopyElement : toCopy) {
+        push_back(toCopyElement);
+    }
     return *this;
 }
 
 String& String::operator=(String&& toMove)
 {
-    _begin = toMove._begin;
-    _size = toMove._size;
-    _capacity = toMove._capacity;
+    clear();
+    swap(toMove);
+    return *this;
+}
 
-    toMove._begin = nullptr;
-    toMove._size = 0;
-    toMove._capacity = 0;
+String& String::operator=(const value_type* arrayToCopy)
+{
+    size_type newSize = strlen(arrayToCopy);
+    if (newSize <= _capacity) {
+        memcpy(_begin, arrayToCopy, newSize);
+        _size = newSize;
+        return *this;
+    }
+
+    value_type* newArr = new value_type[newSize];
+    freeArray(_begin);
+    _begin = newArr;
+    _size = newSize;
+    _capacity = newSize;
+    return *this;
+}
+
+String& String::operator=(std::initializer_list<value_type> iList)
+{
+    clear();
+    reserve(iList.size());
+    for (auto iListElement : iList) {
+        push_back(iListElement);
+    }
     return *this;
 }
 
@@ -92,6 +123,7 @@ void String::reserve(size_type newCapacity)
     freeArray(_begin);
 
     _begin = newArr;
+    _begin[_size] = nullTerminate;
     _capacity = newCapacity;
 }
 
@@ -171,6 +203,7 @@ void String::insert(size_type idx, const value_type& value)
 
 void String::clear()
 {
+    *_begin = nullTerminate;
     _size = 0;
 }
 
@@ -237,6 +270,13 @@ value_type* String::c_str() noexcept
 const value_type* String::c_str() const noexcept
 {
     return _begin;
+}
+
+void String::swap(String& toSwap) noexcept
+{
+    std::swap(_begin, toSwap._begin);
+    std::swap(_size, toSwap._size);
+    std::swap(_capacity, toSwap._capacity);
 }
 
 value_type* String::makeExtendedCopy(

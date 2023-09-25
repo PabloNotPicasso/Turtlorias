@@ -77,11 +77,8 @@ String operator+(const String& lhs, const value_type* array)
 
 bool operator==(const String& lhs, const String& rhs)
 {
-    bool areEqual = lhs.size() == rhs.size();
-    for (size_t i = 0; areEqual && i < lhs.size(); ++i) {
-        areEqual &= lhs[i] == rhs[i];
-    }
-    return areEqual;
+    auto cmp = strcmp(lhs._begin, rhs._begin);
+    return cmp == 0;
 }
 
 bool operator!=(const String& lhs, const String& rhs)

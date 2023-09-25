@@ -20,6 +20,18 @@ TEST_F(StringOperator, sameString)
     EXPECT_EQ(str, sameStringExtended);
 }
 
+TEST_F(StringOperator, initializedString)
+{
+    const String str = initializedString;
+    EXPECT_TRUE(str == initializedString);
+    EXPECT_TRUE(str >= initializedString);
+    EXPECT_TRUE(str <= initializedString);
+
+    EXPECT_FALSE(str != initializedString);
+    EXPECT_FALSE(str > initializedString);
+    EXPECT_FALSE(str < initializedString);
+}
+
 TEST_F(StringOperator, cString)
 {
     const String str = cStringData;
@@ -54,6 +66,7 @@ TEST_F(StringOperator, sumAssign)
     const String expectedSumCharArray = "abcdef01234";
     str += "1234";
     EXPECT_EQ(str, expectedSumCharArray);
+    EXPECT_EQ(str.size(), expectedSumCharArray.size());
 }
 
 TEST_F(StringOperator, sum)

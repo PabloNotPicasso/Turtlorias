@@ -25,13 +25,16 @@ public:
     ~String();
     String();
     explicit String(size_type count, value_type value = nullTerminate);
-    String(const value_type*);
-    String(const std::initializer_list<value_type>&);
 
     String(const String&);
     String(String&&);
+    String(const value_type*);
+    String(std::initializer_list<value_type>);
+
     String& operator=(const String&);
     String& operator=(String&&);
+    String& operator=(const value_type*);
+    String& operator=(std::initializer_list<value_type>);
 
     void reserve(size_type newCapacity);
     void resize(size_type newSize, value_type symbol = nullTerminate);
@@ -59,6 +62,8 @@ public:
 
     const value_type* c_str() const noexcept;
     value_type* c_str() noexcept;
+
+    void swap(String&) noexcept;
 
     String& operator+=(const String&);
     String& operator+=(value_type);
