@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <utility>
 
-namespace Structures {
+namespace Structures::STL {
 
 template<typename T>
 class Vector {
@@ -517,4 +517,4 @@ private:
     size_type _capacity;
 };
 
-} // namespace Structures
+} // namespace Structures::STL

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <utility>
 
-namespace Structures {
+namespace Structures::STL {
 
 class String {
 public:
@@ -113,4 +113,4 @@ bool operator>=(const String&, const String&);
 bool operator<(const String&, const String&);
 bool operator<=(const String&, const String&);
 
-} // namespace Structures
+} // namespace Structures::STL

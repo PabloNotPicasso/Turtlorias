@@ -1,6 +1,6 @@
 #include "String.h"
 
-namespace Structures {
+namespace Structures::STL {
 
 using size_type = String::size_type;
 using value_type = String::value_type;
@@ -107,4 +107,4 @@ bool operator<=(const String& lhs, const String& rhs)
     return rhs >= lhs;
 }
 
-} // namespace Structures
+} // namespace Structures::STL

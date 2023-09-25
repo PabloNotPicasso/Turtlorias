@@ -1,4 +1,4 @@
 #include "Vector.h"
 
-namespace Structures {
+namespace Structures::STL {
 }

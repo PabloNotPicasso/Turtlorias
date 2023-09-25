@@ -1,6 +1,6 @@
 #include "String.h"
 
-namespace Structures {
+namespace Structures::STL {
 
 using size_type = String::size_type;
 using value_type = String::value_type;
@@ -292,4 +292,4 @@ void String::freeArray(value_type* array)
     delete[] array;
 }
 
-} // namespace Structures
+} // namespace Structures::STL

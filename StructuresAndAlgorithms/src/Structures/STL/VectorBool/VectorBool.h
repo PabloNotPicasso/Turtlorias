@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace Structures {
+namespace Structures::STL {
 
 class VectorBool {
 private:
@@ -70,4 +70,4 @@ private:
     size_t m_size;
 };
 
-} // namespace Structures
+} // namespace Structures::STL

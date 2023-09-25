@@ -4,7 +4,7 @@
 
 #include <functional>
 
-namespace Structures {
+namespace Structures::STL {
 
 template<typename ObjectType>
 class SharedPtr {
@@ -101,4 +101,4 @@ void SharedPtr<ObjectType>::try_to_delete()
     m_ptr = nullptr;
 }
 
-} // namespace Structures
+} // namespace Structures::STL

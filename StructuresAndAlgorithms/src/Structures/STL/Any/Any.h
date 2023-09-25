@@ -3,7 +3,7 @@
 #include <cassert>
 #include <typeindex>
 
-namespace Structures {
+namespace Structures::STL {
 
 class Any {
 public:
@@ -69,4 +69,4 @@ const T& Any::as() const
     return *(static_cast<T*>(ptr));
 }
 
-} // namespace Structures
+} // namespace Structures::STL

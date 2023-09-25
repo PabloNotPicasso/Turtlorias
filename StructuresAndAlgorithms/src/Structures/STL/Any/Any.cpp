@@ -4,7 +4,7 @@
 
 using namespace std;
 
-namespace Structures {
+namespace Structures::STL {
 
 Any::Any()
     : ind(typeid(nullptr))
@@ -28,4 +28,4 @@ void Any::reset()
     ptr = nullptr;
 }
 
-} // namespace Structures
+} // namespace Structures::STL

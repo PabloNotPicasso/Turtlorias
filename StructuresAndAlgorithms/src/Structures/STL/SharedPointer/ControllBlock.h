@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cstddef>
 
-namespace Structures {
+namespace Structures::STL {
 
 class ControllBlock {
 public:
@@ -30,4 +30,4 @@ private:
     size_t m_counter;
 };
 
-} // namespace Structures
+} // namespace Structures::STL

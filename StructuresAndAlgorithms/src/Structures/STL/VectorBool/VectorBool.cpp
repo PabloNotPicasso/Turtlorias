@@ -8,7 +8,7 @@ namespace {
 constexpr size_t BIT_IN_BYTE = 8;
 }
 
-namespace Structures {
+namespace Structures::STL {
 
 ////////////////////////////////////////////////////////////////////////////////////
 // BitController
@@ -106,4 +106,4 @@ VectorBool::byte& VectorBool::getByteRef(const size_t index) const
     return m_array[index / BIT_IN_BYTE];
 }
 
-} // namespace Structures
+} // namespace Structures::STL
