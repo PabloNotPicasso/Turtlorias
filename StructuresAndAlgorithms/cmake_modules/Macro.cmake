@@ -2,7 +2,7 @@ include(ExternalProject)
 
 function(build_library LIBRARY)
     file(GLOB_RECURSE SRC_LIST "${LIBRARY}/*.cpp")
-    
+
     message(STATUS "sources:")
     list(APPEND CMAKE_MESSAGE_INDENT "   ")
     foreach(SRC_FILE ${SRC_LIST})
@@ -28,7 +28,7 @@ function(build_test LIBRARY)
     list(POP_BACK CMAKE_MESSAGE_INDENT)
     add_gtest_test(${LIBRARY}_test ${TEST_SRC} ${LIBRARY})
 endfunction()
-    
+
 function(add_structure LIBRARY)
     message(STATUS "Add structure \'${LIBRARY}\':")
     list(APPEND CMAKE_MESSAGE_INDENT "   ")

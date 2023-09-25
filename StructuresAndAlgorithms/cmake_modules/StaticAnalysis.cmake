@@ -4,9 +4,9 @@ find_package(
     REQUIRED
 )
 
-###################
-###  cpp-check
-###################
+# ##############################################################################
+# cpp-check
+# ##############################################################################
 find_program(CPPCHECK_PATH cppcheck)
 
 if(NOT CPPCHECK_PATH)
@@ -41,9 +41,9 @@ add_custom_command(
 
 add_custom_target(codeanalysis DEPENDS ${CPPCHECK_OUTPUT})
 
-###################
-###  clang-tidy
-###################
+# ##############################################################################
+# clang-tidy
+# ##############################################################################
 find_program(CLANG_TIDY_PATH clang-tidy)
 if(NOT CLANG_TIDY_PATH)
     message(FATAL_ERROR "No program 'clang-tidy' found")
@@ -67,10 +67,8 @@ add_custom_command(
     COMMAND
         ${Python3_EXECUTABLE} ${RUN_CLANG_TIDY_PATH} -quiet
         # Header filter
-        -header-filter=${CMAKE_CURRENT_SOURCE_DIR}/src/.*
-        -p ${CMAKE_CURRENT_BINARY_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
-        -j `nproc` > ${CLANG_TIDY_OUTPUT_TEMP}
+        -header-filter=${CMAKE_CURRENT_SOURCE_DIR}/src/.* -p ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src -j `nproc` > ${CLANG_TIDY_OUTPUT_TEMP}
     COMMENT "Analyzing code by 'clang-tidy'"
 )
 

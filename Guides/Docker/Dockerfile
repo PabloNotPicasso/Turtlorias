@@ -22,6 +22,7 @@ RUN cd googletest && \
     make && \
     make install
 
+RUN python3 -m pip install cmake_format --break-system-packages
 ###########################
 # Adding User
 ARG USERID=1000
@@ -32,6 +33,4 @@ ARG USERGROUP=turtorias_group
 RUN groupadd -o -g ${GROUPID} ${USERGROUP} \
   && useradd -o --no-log-init -m -u ${USERID} -g ${USERGROUP} ${USERNAME}
 
-# RUN groupadd -r $USERGROUP
-# RUN useradd -r -u 1000 -g $USERGROUP $USERNAME
 USER ${USERNAME}
