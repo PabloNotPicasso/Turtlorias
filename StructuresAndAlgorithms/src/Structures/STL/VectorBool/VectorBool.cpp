@@ -1,4 +1,4 @@
-#include "BoolVector.h"
+#include "VectorBool.h"
 
 #include <cassert>
 #include <iostream>
@@ -12,35 +12,35 @@ namespace Structures {
 
 ////////////////////////////////////////////////////////////////////////////////////
 // BitController
-BoolVector::BitController::BitController(const size_t globalIndex, byte& byteRef)
+VectorBool::BitController::BitController(const size_t globalIndex, byte& byteRef)
     : m_index(globalIndex % BIT_IN_BYTE)
     , m_byte(byteRef)
 {
 }
 
-BoolVector::BitController& BoolVector::BitController::operator=(const BitController& bc)
+VectorBool::BitController& VectorBool::BitController::operator=(const BitController& bc)
 {
     setBit(bc);
     return *this;
 }
 
-BoolVector::BitController& BoolVector::BitController::operator=(bool value)
+VectorBool::BitController& VectorBool::BitController::operator=(bool value)
 {
     setBit(value);
     return *this;
 }
 
-BoolVector::BitController::operator bool() const
+VectorBool::BitController::operator bool() const
 {
     return getBit();
 }
 
-bool BoolVector::BitController::getBit() const
+bool VectorBool::BitController::getBit() const
 {
     return m_byte & (1 << m_index);
 }
 
-void BoolVector::BitController::setBit(const bool newValue)
+void VectorBool::BitController::setBit(const bool newValue)
 {
     if (getBit() != newValue) {
         m_byte ^= (1 << m_index);
@@ -49,43 +49,43 @@ void BoolVector::BitController::setBit(const bool newValue)
 // End of BitController
 /////////////////////////////////////////////////////////////////////////
 
-BoolVector::BoolVector(const size_t size)
+VectorBool::VectorBool(const size_t size)
     : m_array(1 + size / BIT_IN_BYTE)
     , m_size(size)
 {
 }
 
-BoolVector::BoolVector(const std::initializer_list<bool> list)
-    : BoolVector(list.size())
+VectorBool::VectorBool(const std::initializer_list<bool> list)
+    : VectorBool(list.size())
 {
     for (const auto& item : list) {
         push_back(item);
     }
 }
 
-BoolVector::BitController BoolVector::operator[](const size_t index)
+VectorBool::BitController VectorBool::operator[](const size_t index)
 {
     assert(index < size());
     return BitController(index, getByteRef(index));
 }
 
-const BoolVector::BitController BoolVector::operator[](const size_t index) const
+const VectorBool::BitController VectorBool::operator[](const size_t index) const
 {
     assert(index < size());
     return BitController(index, getByteRef(index));
 }
 
-size_t BoolVector::capacity() const
+size_t VectorBool::capacity() const
 {
     return m_array.size() * BIT_IN_BYTE;
 }
 
-size_t BoolVector::size() const
+size_t VectorBool::size() const
 {
     return m_size;
 }
 
-void BoolVector::push_back(const bool newValue)
+void VectorBool::push_back(const bool newValue)
 {
     if (capacity() == size()) {
         extend();
@@ -96,12 +96,12 @@ void BoolVector::push_back(const bool newValue)
     ++m_size;
 }
 
-void BoolVector::extend()
+void VectorBool::extend()
 {
     m_array.push_back(0);
 }
 
-BoolVector::byte& BoolVector::getByteRef(const size_t index) const
+VectorBool::byte& VectorBool::getByteRef(const size_t index) const
 {
     return m_array[index / BIT_IN_BYTE];
 }

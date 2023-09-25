@@ -6,7 +6,7 @@
 
 namespace Structures {
 
-class BoolVector {
+class VectorBool {
 private:
     using byte = int8_t;
     class BitController {
@@ -31,12 +31,12 @@ public:
     /**
      * @brief Will create vector which support at least \p size boolean variables
      */
-    BoolVector(const size_t size = 0);
+    VectorBool(const size_t size = 0);
 
     /**
      * @brief Will create vector using initializer list values
      */
-    BoolVector(std::initializer_list<bool> list);
+    VectorBool(std::initializer_list<bool> list);
 
     /**
      * @brief Returns modifieble BitController by \p index

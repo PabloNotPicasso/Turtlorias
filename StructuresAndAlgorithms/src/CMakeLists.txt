@@ -11,7 +11,7 @@ set(LIBS
     Structures::MinQueue
     Structures::SegmentAccumulator
     Structures::STL::Any
-    Structures::STL::BoolVector
+    Structures::STL::VectorBool
     Structures::STL::SharedPointer
     Structures::STL::String
     Structures::STL::Vector
