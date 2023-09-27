@@ -25,8 +25,9 @@ else()
 endif()
 
 macro(add_gtest_test testName files libraries)
-
-    if((NOT TARGET GTest::gtest) OR (NOT TARGET GTest::gmock))
+    if(NOT ${ENABLE_TESTS})
+        return()
+    elseif((NOT TARGET GTest::gtest) OR (NOT TARGET GTest::gmock))
         message(FATAL_ERROR "No gtest or gmock targets found, can't add tests")
     else()
         add_executable(${testName} ${files})

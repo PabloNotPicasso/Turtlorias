@@ -1,3 +1,4 @@
+include(Options)
 include(CTest)
 include(SetUp)
 include(CodeFormatting)

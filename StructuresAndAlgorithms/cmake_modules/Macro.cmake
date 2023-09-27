@@ -2,6 +2,7 @@ include(ExternalProject)
 
 function(build_library LIBRARY)
     file(GLOB_RECURSE SRC_LIST "${LIBRARY}/*.cpp")
+    list(FILTER SRC_LIST EXCLUDE REGEX "test")
 
     message(STATUS "sources:")
     list(APPEND CMAKE_MESSAGE_INDENT "   ")
@@ -15,24 +16,37 @@ function(build_library LIBRARY)
 endfunction()
 
 function(build_test LIBRARY)
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY}/test/main.cpp")
-        set(TEST_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY}/test/main.cpp")
-    elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY}/test/${LIBRARY}Test.cpp")
-        set(TEST_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY}/test/${LIBRARY}Test.cpp")
-    else()
-        message(FATAL_ERROR "There is no tests for ${LIBRARY}")
+    if(NOT ${ENABLE_TESTS})
+        return()
     endif()
+
+    set(TestFolder "${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY}/test")
+    set(MainTest "${TestFolder}/main.cpp")
+    set(SingleTest "${TestFolder}/${LIBRARY}Test.cpp")
+
+    if(EXISTS ${MainTest})
+        set(TEST_SRC ${MainTest})
+    elseif(EXISTS ${SingleTest})
+        set(TEST_SRC ${SingleTest})
+    else()
+        message(FATAL_ERROR "There is no tests for ${SingleTest}")
+    endif()
+
     message(STATUS "test:")
     list(APPEND CMAKE_MESSAGE_INDENT "   ")
+
     message(STATUS "${TEST_SRC}")
     list(POP_BACK CMAKE_MESSAGE_INDENT)
+
     add_gtest_test(${LIBRARY}_test ${TEST_SRC} ${LIBRARY})
 endfunction()
 
 function(add_structure LIBRARY)
     message(STATUS "Add structure \'${LIBRARY}\':")
+
     list(APPEND CMAKE_MESSAGE_INDENT "   ")
     build_library(${LIBRARY})
     build_test(${LIBRARY})
     list(POP_BACK CMAKE_MESSAGE_INDENT)
+
 endfunction()
