@@ -17,8 +17,8 @@ std::string_view formatFunctionName(std::string_view function, std::string_view 
 std::string timestamp()
 {
     using namespace std::chrono;
-    auto nowTime = duration_cast<milliseconds>(steady_clock::now().time_since_epoch());
-    return std::to_string(nowTime.count() % 1'000'000);
+    auto nowTimeMs = time_point_cast<milliseconds>(steady_clock::now());
+    return std::to_string(nowTimeMs.time_since_epoch().count() % 1'000'000);
 }
 
 std::string line(int lineNumber)
