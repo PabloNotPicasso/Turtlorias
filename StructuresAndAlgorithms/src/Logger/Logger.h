@@ -1,23 +1,21 @@
 #pragma once
+
+#include "LogLevel.h"
+
 #include <string>
+#include <string_view>
+
+#define LOG_SHOW_TIMESTAMP
+#define LOG_SHOW_FUNCTION_NAME
 
 namespace Logger {
 
-enum LogLevel {
-    LOG_VERBOSE,
-    LOG_INFO,
-    LOG_ERROR,
-    LOG_FATAL,
-};
+std::string_view formatFunctionName(std::string_view function, std::string_view prettyFunction);
+std::string timestamp();
+std::string line(int);
 
-std::string formatFunctionName(
-    const std::string& function, const std::string& prettyFunction, const int& line = 0);
 void showMessage(const LogLevel& logLvl, const std::string& message);
 
-template<typename... Args>
-std::string formatMessage(const std::string& message)
-{
-    return message;
-}
+std::string formatMessage(const std::string& message, std::string_view name);
 
 } // namespace Logger
