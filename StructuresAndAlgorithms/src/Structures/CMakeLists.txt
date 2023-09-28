@@ -1,5 +1,6 @@
 set(PACKAGE Structures)
 
+add_subdirectory(Multithreading/Timer)
 add_subdirectory(Geometry)
 add_subdirectory(STL)
 

@@ -19,8 +19,8 @@
 #define LOG_ERR(message) LOG_FUNC_MSG(LOG_ERROR, message)
 #define LOG_FTL(message) LOG_FUNC_MSG(LOG_FATAL, message)
 
-#define FUNCTION_ENTERED FORMAT_MSG(FUNCTION_NAME + " Entered{")
-#define FUNCTION_LEAVED FORMAT_MSG(FUNCTION_NAME + " Leaved}")
+#define FUNCTION_ENTERED FORMAT_MSG(" Entered{", FUNCTION_NAME)
+#define FUNCTION_LEAVED FORMAT_MSG(" Leaved}", FUNCTION_NAME)
 #define LOG_FUNCTION_ENTERED_LEAVED                                                                \
     const FunctionEnterLeavedRAII __logFelRAII__(FUNCTION_ENTERED, FUNCTION_LEAVED)
 #define LOG_FUNCTION LOG_FUNCTION_ENTERED_LEAVED
@@ -30,12 +30,12 @@ struct FunctionEnterLeavedRAII {
     FunctionEnterLeavedRAII(const std::string& enterMsg, const std::string& exitMsg)
         : m_exitMsg(exitMsg)
     {
-        LOG_VRB(enterMsg);
+        LOG_MSG_IMPL(Logger::LogLevel::LOG_VERBOSE, enterMsg);
     }
 
     ~FunctionEnterLeavedRAII()
     {
-        LOG_VRB(m_exitMsg);
+        LOG_MSG_IMPL(Logger::LogLevel::LOG_VERBOSE, m_exitMsg);
     }
 
 private:
