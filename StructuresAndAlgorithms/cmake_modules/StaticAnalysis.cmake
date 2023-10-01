@@ -4,9 +4,9 @@ find_package(
     REQUIRED
 )
 
-# ##############################################################################
+###############################################################################
 # cpp-check
-# ##############################################################################
+###############################################################################
 find_program(CPPCHECK_PATH cppcheck)
 
 if(NOT CPPCHECK_PATH)
@@ -30,7 +30,7 @@ add_custom_command(
         --enable=warning,performance,portability,information,missingInclude --language=c++ --xml
         --xml-version=2
         # Error to supress
-        --suppress=missingInclude --inline-suppr --suppress=unmatchedSuppression
+        --inline-suppr
         # Suppression list
         --suppressions-list=${CMAKE_BINARY_DIR}/cppcheck-suppressions.txt
         # Ignore binary dir
@@ -41,9 +41,9 @@ add_custom_command(
 
 add_custom_target(codeanalysis DEPENDS ${CPPCHECK_OUTPUT})
 
-# ##############################################################################
+###############################################################################
 # clang-tidy
-# ##############################################################################
+###############################################################################
 find_program(CLANG_TIDY_PATH clang-tidy)
 if(NOT CLANG_TIDY_PATH)
     message(FATAL_ERROR "No program 'clang-tidy' found")
@@ -61,15 +61,14 @@ set(CLANG_TIDY_OUTPUT_TEMP ${CMAKE_CURRENT_BINARY_DIR}/clang-tidy-result.output)
 set(CLANG_TIDY_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/clang-tidy-result.txt)
 
 add_custom_command(
-    OUTPUT ${CLANG_TIDY_OUTPUT_TEMP}
+    OUTPUT ${CLANG_TIDY_OUTPUT}
     COMMAND ${CMAKE_COMMAND} -E touch ${CLANG_TIDY_OUTPUT}
     COMMAND ${CMAKE_COMMAND} -E create_symlink ${CLANG_TIDY_OUTPUT} ${CLANG_TIDY_OUTPUT_TEMP}
     COMMAND
         ${Python3_EXECUTABLE} ${RUN_CLANG_TIDY_PATH} -quiet
         # Header filter
-        -header-filter=${CMAKE_CURRENT_SOURCE_DIR}/src/.* -p ${CMAKE_CURRENT_BINARY_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/src -j `nproc` > ${CLANG_TIDY_OUTPUT_TEMP}
+        -p ${CMAKE_CURRENT_BINARY_DIR} -j `nproc` > ${CLANG_TIDY_OUTPUT_TEMP}
     COMMENT "Analyzing code by 'clang-tidy'"
 )
 
-add_custom_target(clangTidy DEPENDS ${CLANG_TIDY_OUTPUT_TEMP})
+add_custom_target(clangTidy DEPENDS ${CLANG_TIDY_OUTPUT})

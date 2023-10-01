@@ -1,10 +1,9 @@
 Checks:         'portability-*,
-                readability-*,
-                readability-identifier-naming'
+                readability-*'
 # Disabled checks:
 #                -*,
 #                clang-diagnostic-*,
-#                clang-analyzer-*,                
+#                clang-analyzer-*,
 #                -clang-analyzer-alpha*,
 #                cppcoreguidelines-*,
 #                -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
@@ -30,8 +29,8 @@ Checks:         'portability-*,
 # - hicpp-vararg: Unavoidable when using c-style gst functions (gstreamer pipeline).
 # - hicpp-signed-bitwise: Unavoidable when using c-style gst functions (gstreamer pipeline).
 
-UseColor: ''
-WarningsAsErrors: 'true'
+HeaderFilterRegex: '^(?!.*\/test\/).*'
+
 CheckOptions:
   - key: readability-identifier-naming.InlineNamespaceCase
     value: CamelCase

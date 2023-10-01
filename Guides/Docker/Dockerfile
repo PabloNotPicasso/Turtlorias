@@ -1,6 +1,6 @@
-FROM gcc:latest
+FROM ubuntu:latest
 
-RUN apt-get update && \
+RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install -y \
     cmake \
     git \
@@ -10,7 +10,9 @@ RUN apt-get update && \
     python3 python3-pip python3-setuptools python3-wheel \
     libboost-dev libboost-program-options-dev libboost-log-dev
 
-RUN apt-get upgrade -y
+RUN pip install cmake_format
+
+RUN apt-get update -y && apt-get upgrade -y
 
 ###########################
 # GTest
@@ -22,7 +24,6 @@ RUN cd googletest && \
     make && \
     make install
 
-RUN python3 -m pip install cmake_format --break-system-packages
 ###########################
 # Adding User
 ARG USERID=1000
