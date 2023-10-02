@@ -13,10 +13,8 @@ if(NOT CPPCHECK_PATH)
     message(FATAL_ERROR "No program 'cppcheck' found")
 endif()
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 configure_file(
-    ${CMAKE_SOURCE_DIR}/cmake_modules/cppcheck/cppcheck-suppressions.txt.in
+    ${CMAKE_MODULES_DIR}/cppcheck/cppcheck-suppressions.txt.in
     ${CMAKE_BINARY_DIR}/cppcheck-suppressions.txt
 )
 
