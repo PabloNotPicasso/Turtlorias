@@ -12,7 +12,7 @@ std::string_view formatFunctionName(std::string_view function, std::string_view 
 std::string timestamp();
 std::string line(int);
 
-void showMessage(const LogLevel& logLvl, const std::string& message);
+void showMessage(const LogLevel& logLvl, std::string_view message);
 
 std::string formatMessage(const std::string& message, std::string_view name);
 
