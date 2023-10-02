@@ -1,4 +1,10 @@
 set(TARGET Logger)
-set(SRC "Logger.cpp" "LogLevel.cpp")
 
-add_library(${TARGET} ${SRC})
+configure_file(
+    "${CMAKE_CURRENT_LIST_DIR}/Logger/LoggerConfig.h.in"
+    "${CMAKE_CURRENT_LIST_DIR}/Logger/LoggerConfig.h" @ONLY
+)
+
+set(SRC "Logger/Logger.cpp" "Logger/LogLevel.cpp")
+
+add_library(${TARGET} SHARED ${SRC})

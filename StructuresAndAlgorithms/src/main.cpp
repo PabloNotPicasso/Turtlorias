@@ -1,6 +1,6 @@
-#include <bits/stdc++.h>
-
 #include "Logger/LoggerApi.h"
+
+#include <bits/stdc++.h>
 
 int main()
 {

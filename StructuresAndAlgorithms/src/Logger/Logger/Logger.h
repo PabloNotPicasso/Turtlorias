@@ -1,12 +1,10 @@
 #pragma once
 
 #include "LogLevel.h"
+#include "LoggerConfig.h"
 
 #include <string>
 #include <string_view>
-
-#define LOG_SHOW_TIMESTAMP
-#define LOG_SHOW_FUNCTION_NAME
 
 namespace Logger {
 
