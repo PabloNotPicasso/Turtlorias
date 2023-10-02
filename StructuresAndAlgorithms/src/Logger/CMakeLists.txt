@@ -8,3 +8,5 @@ configure_file(
 set(SRC "Logger/Logger.cpp" "Logger/LogLevel.cpp")
 
 add_library(${TARGET} SHARED ${SRC})
+
+add_gtest_test(${TARGET}_test "test/${TARGET}Test.cpp" ${TARGET})

@@ -10,7 +10,7 @@ std::string_view formatFunctionName(std::string_view function, std::string_view 
 {
     const size_t locFunName = prettyFunction.find(function);
     const size_t begin = prettyFunction.rfind(" ", locFunName) + 1;
-    const size_t end = prettyFunction.find("(", locFunName + function.length());
+    const size_t end = prettyFunction.length();
     std::string_view fmtName = prettyFunction.substr(begin, end - begin);
 
     // Cut off the namespace if exists
@@ -39,29 +39,28 @@ std::string line(int lineNumber)
     return std::to_string(lineNumber);
 }
 
-std::string formatMessage(const std::string& message, std::string_view name)
+std::string formatPrefix(std::string_view name)
 {
+#if !defined(LOG_SHOW_TIMESTAMP) and !defined(LOG_SHOW_FUNCTION_NAME)
+    return "";
+#endif
+
     std::string prefix;
+    prefix.reserve(40);
+    prefix.push_back(' ');
 
 #ifdef LOG_SHOW_TIMESTAMP
-    prefix += timestamp() + " ";
+    prefix += timestamp();
+    prefix.push_back(' ');
 #endif
 
 #ifdef LOG_SHOW_FUNCTION_NAME
     prefix += name;
-    prefix += "()";
+    prefix.push_back(' ');
 #endif
 
-#if defined(LOG_SHOW_TIMESTAMP) or defined(LOG_SHOW_FUNCTION_NAME)
-    prefix += ": ";
-#endif
-
-    return prefix + message;
-}
-
-void showMessage(const LogLevel& logLvl, std::string_view message)
-{
-    std::cout << logLvl << " " << message << std::endl;
+    prefix.push_back(':');
+    return prefix;
 }
 
 } // namespace Logger

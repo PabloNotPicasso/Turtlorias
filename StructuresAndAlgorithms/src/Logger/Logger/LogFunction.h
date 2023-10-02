@@ -6,30 +6,29 @@
 
 #include "LogMessage.h"
 
-#define FUNCTION_ENTERED FORMAT_MSG(" Entered{", FUNCTION_NAME)
-#define FUNCTION_LEAVED FORMAT_MSG(" Leaved}", FUNCTION_NAME)
 #define LOG_FUNCTION                                                                               \
-    static const auto __functionEnteredMsg__ = FUNCTION_ENTERED;                                   \
-    static const auto __functionLeavedMsg__ = FUNCTION_LEAVED;                                     \
-    const FunctionEnterLeavedRAII __LogFunction__(__functionEnteredMsg__, __functionLeavedMsg__)
+    static const auto __functionName__ = FUNCTION_NAME;                                            \
+    const FunctionEnterLeavedRAII __LogFunction__(__functionName__)
 
 // Function Enter\Leaved logging
 struct FunctionEnterLeavedRAII {
-    FunctionEnterLeavedRAII(std::string_view enterMsg, std::string_view exitMsg)
-        : m_exitMsg(exitMsg)
+    FunctionEnterLeavedRAII(std::string_view functionName)
+        : m_functionName(functionName)
     {
-        LOG_MSG_IMPL(Logger::LogLevel::LOG_VERBOSE, enterMsg);
+        static constexpr std::string_view entered = "Entered {";
+        LOG_MESSAGE_WITH_FUNCTION(LOG_VERBOSE, entered, m_functionName);
     }
 
     ~FunctionEnterLeavedRAII()
     {
-        LOG_MSG_IMPL(Logger::LogLevel::LOG_VERBOSE, m_exitMsg);
+        static constexpr std::string_view leaved = "Leaved  }";
+        LOG_MESSAGE_WITH_FUNCTION(LOG_VERBOSE, leaved, m_functionName);
     }
 
 private:
-    const std::string_view m_exitMsg;
+    const std::string_view m_functionName;
 };
 
 #else // LOG_SHOW_FUNCTION_NAME is OFF
-#define FUNCTION_ENTERED
+#define LOG_FUNCTION
 #endif
