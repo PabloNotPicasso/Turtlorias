@@ -1,82 +1,65 @@
 #pragma once
 
-#include <cstddef>
-#include <cstdint>
-#include <utility>
+#include "VectorBase.h"
 
 namespace Structures::STL {
 
-template<typename T>
-class Vector {
+template<typename T, typename Allocator = std::allocator<T>>
+class Vector : public VectorBase<T, Allocator> {
 public:
+    using Base = VectorBase<T, Allocator>;
+
     using value_type = T;
     using pointer = T*;
     using const_pointer = const T*;
     using reference = T&;
     using const_reference = const T&;
     using size_type = size_t;
-    using byte = int8_t;
 
     using iterator = pointer;
     using const_iterator = const_pointer;
 
+    static constexpr size_t capacityMultiplier = 2U;
+
 public:
     Vector()
-        : _begin(createArray(1U))
+        : _begin(Base::createArray(1U))
         , _size(0)
         , _capacity(1)
     {
     }
 
     explicit Vector(size_type count)
-        : _begin(createArray(count))
+        : _begin(Base::createArray(count))
         , _size(count)
         , _capacity(count)
     {
-        pointer toCreateIt = _begin;
         try {
-            for (; toCreateIt != _begin + _size; ++toCreateIt) {
-                new (toCreateIt) T();
-            }
+            Base::constructArray(_begin, _begin + _size);
         } catch (...) {
-            freeArray(_begin, toCreateIt - _begin);
+            Base::freeRawArray(_begin, _capacity);
             throw;
         }
     }
 
     Vector(size_type count, const value_type& value)
-        : _begin(createArray(count))
+        : _begin(Base::createArray(count))
         , _size(count)
         , _capacity(count)
     {
-        pointer toCreateIt = _begin;
         try {
-            for (; toCreateIt != _begin + _size; ++toCreateIt) {
-                new (toCreateIt) T(value);
-            }
+            Base::constructArray(_begin, _begin + _size, value);
         } catch (...) {
-            freeArray(_begin, toCreateIt - _begin);
+            Base::freeRawArray(_begin, _capacity);
             throw;
         }
     }
 
     Vector(const Vector& toCopy)
     {
-        auto newArray = createArray(toCopy.size());
-
-        pointer toCreateIt = newArray;
-        try {
-            for (pointer toCopyIt = toCopy._begin; toCopyIt != toCopy.end();
-                 ++toCopyIt, ++toCreateIt) {
-                new (toCreateIt) T(*toCopyIt);
-            }
-        } catch (...) {
-            freeArray(newArray, toCreateIt - newArray);
-            throw;
-        }
-        _begin = newArray;
+        _begin = Base::makeExtendedCopy(toCopy._begin, toCopy.size(), toCopy.size());
         _size = toCopy.size();
-        _capacity = _size;
+        _capacity = toCopy.size();
     }
 
     Vector(Vector&& toMove)
@@ -92,7 +75,8 @@ public:
 
     explicit Vector(std::initializer_list<T> iList)
     {
-        auto newArray = createArray(iList.size());
+        auto newCapacity = iList.size();
+        auto newArray = Base::createArray(newCapacity);
 
         pointer toCreateIt = newArray;
         try {
@@ -100,12 +84,12 @@ public:
                 new (toCreateIt) T(*ilIt);
             }
         } catch (...) {
-            freeArray(newArray, toCreateIt - newArray);
+            Base::deleteAndFree(newArray, newCapacity, toCreateIt - newArray);
             throw;
         }
         _begin = newArray;
-        _size = iList.size();
-        _capacity = _size;
+        _size = newCapacity;
+        _capacity = newCapacity;
     }
 
     Vector& operator=(const Vector& toCopy)
@@ -130,7 +114,9 @@ public:
 
     ~Vector()
     {
-        freeArray(_begin, _size);
+        if (_begin) {
+            Base::deleteAndFree(_begin, _capacity, _size);
+        }
     }
 
     void reserve(size_type newCapacity)
@@ -139,8 +125,9 @@ public:
             return;
         }
 
-        pointer newArr = makeExtendedCopy(_begin, _size, newCapacity);
-        freeArray(_begin, _size);
+        pointer newArr = Base::makeExtendedCopy(_begin, _size, newCapacity);
+
+        Base::deleteAndFree(_begin, _capacity, _size);
 
         _begin = newArr;
         _capacity = newCapacity;
@@ -153,34 +140,23 @@ public:
         }
 
         if (newSize <= _capacity) {
-            size_type toConstructIdx = _size;
-            try {
-                for (; toConstructIdx < newSize; ++toConstructIdx) {
-                    new (_begin + toConstructIdx) T();
-                }
-            } catch (...) {
-                for (size_type toDeleteIdx = _size; toDeleteIdx < toConstructIdx; ++toDeleteIdx) {
-                    (_begin + toDeleteIdx)->~T();
-                }
-                throw;
-            }
+            Base::constructArray(_begin + _size, _begin + newSize);
             _size = newSize;
         } else {
-            auto newArr = makeExtendedCopy(_begin, _size, newSize);
-            size_type toConstructIdx = _size;
+            auto newCapacity = newSize;
+
+            auto newArr = Base::makeExtendedCopy(_begin, _size, newSize);
             try {
-                for (; toConstructIdx < newSize; ++toConstructIdx) {
-                    new (newArr + toConstructIdx) T();
-                }
+                Base::constructArray(newArr + _size, newArr + newSize);
             } catch (...) {
-                freeArray(newArr, toConstructIdx);
+                Base::freeRawArray(newArr, newCapacity);
                 throw;
             }
+            Base::deleteAndFree(_begin, _capacity, _size);
 
-            freeArray(_begin, _size);
             _begin = newArr;
             _size = newSize;
-            _capacity = newSize;
+            _capacity = newCapacity;
         }
     }
     void resize(size_type newSize, const value_type& value)
@@ -190,34 +166,23 @@ public:
         }
 
         if (newSize <= _capacity) {
-            size_type toConstructIdx = _size;
-            try {
-                for (; toConstructIdx < newSize; ++toConstructIdx) {
-                    new (_begin + toConstructIdx) T(value);
-                }
-            } catch (...) {
-                for (size_type toDeleteIdx = _size; toDeleteIdx < toConstructIdx; ++toDeleteIdx) {
-                    (_begin + toDeleteIdx)->~T();
-                }
-                throw;
-            }
+            Base::constructArray(_begin + _size, _begin + newSize, value);
             _size = newSize;
         } else {
-            auto newArr = makeExtendedCopy(_begin, _size, newSize);
-            size_type toConstructIdx = _size;
+            auto newCapacity = newSize;
+
+            auto newArr = Base::makeExtendedCopy(_begin, _size, newSize);
             try {
-                for (; toConstructIdx < newSize; ++toConstructIdx) {
-                    new (newArr + toConstructIdx) T(value);
-                }
+                Base::constructArray(newArr + _size, newArr + newSize, value);
             } catch (...) {
-                freeArray(newArr, toConstructIdx);
+                Base::freeRawArray(newArr, newCapacity);
                 throw;
             }
+            Base::deleteAndFree(_begin, _capacity, _size);
 
-            freeArray(_begin, _size);
             _begin = newArr;
             _size = newSize;
-            _capacity = newSize;
+            _capacity = newCapacity;
         }
     }
 
@@ -225,22 +190,22 @@ public:
     {
         if (_size < _capacity) {
             // We can skip try-catch here
-            new (_begin + _size) T(value);
+            Base::constructElement(_begin + _size, value);
             ++_size;
             return;
         }
 
-        size_type newCapacity = _capacity * 2;
-        auto newArr = makeExtendedCopy(_begin, _size, newCapacity);
+        size_type newCapacity = _capacity * capacityMultiplier;
+        auto newArr = Base::makeExtendedCopy(_begin, _size, newCapacity);
 
         try {
             // Add new element
-            new (newArr + _size) T(value);
+            Base::constructElement(newArr + _size, value);
         } catch (...) {
-            freeArray(newArr, _size);
+            Base::deleteAndFree(newArr, newCapacity, _size);
             throw;
         }
-        freeArray(_begin, _size);
+        Base::deleteAndFree(_begin, _capacity, _size);
         _begin = newArr;
         ++_size;
         _capacity = newCapacity;
@@ -249,22 +214,22 @@ public:
     {
         if (_size < _capacity) {
             // We can skip try-catch here
-            new (_begin + _size) T(std::move(value));
+            Base::constructElement(_begin + _size, std::move(value));
             ++_size;
             return;
         }
 
-        size_type newCapacity = _capacity * 2;
-        auto newArr = makeExtendedCopy(_begin, _size, newCapacity);
+        size_type newCapacity = _capacity * capacityMultiplier;
+        auto newArr = Base::makeExtendedCopy(_begin, _size, newCapacity);
 
         try {
             // Add new element
-            new (newArr + _size) T(std::move(value));
+            Base::constructElement(newArr + _size, std::move(value));
         } catch (...) {
-            freeArray(newArr, _size);
+            Base::deleteAndFree(newArr, newCapacity, _size);
             throw;
         }
-        freeArray(_begin, _size);
+        Base::deleteAndFree(_begin, _capacity, _size);
         _begin = newArr;
         ++_size;
         _capacity = newCapacity;
@@ -274,22 +239,22 @@ public:
     void emplace_back(Args... args)
     {
         if (_size < _capacity) {
-            new (_begin + _size) T(args...);
+            Base::constructElement(_begin + _size, std::forward<Args>(args)...);
             ++_size;
             return;
         }
 
-        size_type newCapacity = _capacity * 2;
-        auto newArr = makeExtendedCopy(_begin, _size, newCapacity);
+        size_type newCapacity = _capacity * capacityMultiplier;
+        auto newArr = Base::makeExtendedCopy(_begin, _size, newCapacity);
 
         try {
             // Add new element
-            new (newArr + _size) T(args...);
+            Base::constructElement(newArr + _size, std::forward<Args>(args)...);
         } catch (...) {
-            freeArray(newArr, _size);
+            Base::deleteAndFree(newArr, newCapacity, _size);
             throw;
         }
-        freeArray(_begin, _size);
+        Base::deleteAndFree(_begin, _capacity, _size);
         _begin = newArr;
         ++_size;
         _capacity = newCapacity;
@@ -300,8 +265,8 @@ public:
             throw "pop_back on empty vector";
         }
 
-        back().~T();
         --_size;
+        Base::destroyElement(_begin + _size);
     }
 
     void insert(size_type idx, const value_type& value)
@@ -310,28 +275,27 @@ public:
             size_type reverseIdx = _size;
             // exception ?
             for (; reverseIdx > idx; --reverseIdx) {
-                new (_begin + reverseIdx) T(_begin[reverseIdx - 1]);
-                _begin[reverseIdx - 1].~T();
+                Base::constructElement(_begin + reverseIdx, _begin[reverseIdx - 1]);
+                Base::destroyElement(_begin + reverseIdx - 1);
             }
-            new (_begin + idx) T(value);
+            Base::constructElement(_begin + idx, value);
             ++_size;
             return;
         }
 
-        auto newCapacity = _capacity * 2;
-        T* newArr = createArray(newCapacity);
-        size_t originalIdx = 0;
-        size_t newArrayIdx = 0;
-        for (; originalIdx < idx; ++newArrayIdx) {
-            new (newArr + newArrayIdx) T(_begin[originalIdx++]);
-        }
-        new (newArr + idx) T(value);
-        ++newArrayIdx;
-        for (; originalIdx < _size; ++newArrayIdx) {
-            new (newArr + newArrayIdx) T(_begin[originalIdx++]);
+        auto newCapacity = _capacity * capacityMultiplier;
+        T* newArr = Base::createArray(newCapacity);
+
+        try {
+            Base::copyConstructElements(newArr, _begin, idx);
+            Base::constructElement(newArr + idx, value);
+            Base::copyConstructElements(newArr + idx + 1, _begin + idx, _size - idx);
+        } catch (...) {
+            Base::freeRawArray(newArr, newCapacity);
+            throw;
         }
 
-        freeArray(_begin, _size);
+        Base::deleteAndFree(_begin, _capacity, _size);
         _begin = newArr;
         ++_size;
         _capacity = newCapacity;
@@ -407,7 +371,7 @@ public:
      */
     void clear()
     {
-        deleteElements(_begin, _size);
+        destroyElements(_begin, _begin + _size);
         _size = 0;
     }
 
@@ -420,8 +384,8 @@ public:
         if (_size == _capacity) {
             return;
         }
-        auto shrinkedCopy = makeExtendedCopy(_begin, _size, _size);
-        freeArray(_begin, _size);
+        auto shrinkedCopy = Base::makeExtendedCopy(_begin, _size, _size);
+        Base::deleteAndFree(_begin, _capacity, _size);
 
         _begin = shrinkedCopy;
         _capacity = _size;
@@ -437,78 +401,6 @@ public:
         std::swap(_begin, toSwap._begin);
         std::swap(_size, toSwap._size);
         std::swap(_capacity, toSwap._capacity);
-    }
-
-protected:
-    /**
-     * @brief Create copy of \p array which contains \p extendedCapacity elements
-     * First \p currentSize elements will be copied from \p array
-     *
-     * @param array
-     * @param currentSize
-     * @param extendedCapacity
-     * @return T*
-     */
-    T* makeExtendedCopy(pointer array, size_type currentSize, size_type extendedCapacity)
-    {
-        T* newArr = createArray(extendedCapacity);
-
-        size_type idxToCopy = 0;
-        try {
-            for (; idxToCopy < currentSize; ++idxToCopy) {
-                new (newArr + idxToCopy) T(array[idxToCopy]);
-            }
-        } catch (...) {
-            freeArray(_begin, idxToCopy);
-            throw;
-        }
-        return newArr;
-    }
-
-    /**
-     * @brief Create a raw unintitialized array with \p size elements
-     *
-     * @param size
-     * @return T*
-     */
-    T* createArray(size_t size)
-    {
-        return reinterpret_cast<T*>(new byte[size * sizeof(T)]);
-    }
-
-    /**
-     * @brief Free allocated raw \p array without calling destructors
-     *
-     * @param array
-     */
-    void freeRawArray(T* array)
-    {
-        delete[] reinterpret_cast<byte*>(array);
-    }
-
-    /**
-     * @brief Call destructors for first \b size elements of \b array
-     *
-     * @param array
-     * @param size
-     */
-    void deleteElements(T* array, size_type size)
-    {
-        for (size_type idxToDelete = 0; idxToDelete < size; ++idxToDelete) {
-            array[idxToDelete].~T();
-        }
-    }
-
-    /**
-     * @brief Free allocated \p array after calling destructors for first \p size elements
-     *
-     * @param array
-     * @param size
-     */
-    void freeArray(T* array, size_type size)
-    {
-        deleteElements(array, size);
-        freeRawArray(array);
     }
 
 private:
