@@ -2,6 +2,7 @@ set(PACKAGE ${PACKAGE}::STL)
 
 add_structure(Allocator)
 add_structure(Any)
+add_structure(Array)
 add_structure(Deque)
 add_structure(List)
 add_structure(VectorBool)
