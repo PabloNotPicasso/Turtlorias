@@ -5,7 +5,9 @@
 
 namespace Structures::STL {
 
-template<typename T, int N>
+using Size = size_t;
+
+template<typename T, Size N>
 class Array {
 public:
     using value_type = T;
@@ -94,10 +96,12 @@ public:
 
     T& back()
     {
+        static_assert(N > 0);
         return _data[N - 1];
     }
     const T& back() const
     {
+        static_assert(N > 0);
         return _data[N - 1];
     }
 
@@ -150,13 +154,13 @@ private:
     T _data[N];
 };
 
-template<typename T, int N, int M>
+template<typename T, Size N, Size M>
 bool operator==(const Array<T, N>& lhs, const Array<T, M>& rhs)
 {
     return false;
 }
 
-template<typename T, int N>
+template<typename T, Size N>
 bool operator==(const Array<T, N>& lhs, const Array<T, N>& rhs)
 {
     auto lhsIt = lhs.cbegin();
@@ -170,7 +174,7 @@ bool operator==(const Array<T, N>& lhs, const Array<T, N>& rhs)
     return rhsIt == rhs.cend();
 }
 
-template<typename T, int N, int M>
+template<typename T, Size N, Size M>
 bool operator!=(const Array<T, N>& lhs, const Array<T, M>& rhs)
 {
     return !(lhs == rhs);
