@@ -1,0 +1,6 @@
+add_structure(Array)
+add_structure(Deque)
+add_structure(List)
+add_structure(String)
+add_structure(Vector)
+add_structure(VectorBool)

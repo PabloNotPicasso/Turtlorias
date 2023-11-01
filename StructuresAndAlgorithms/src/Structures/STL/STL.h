@@ -1,7 +1,6 @@
 #pragma once
 
+#include "Allocator/Allocator.h"
 #include "Any/Any.h"
-#include "SharedPointer/SharedPointer.h"
-#include "String/String.h"
-#include "Vector/Vector.h"
-#include "VectorBool/VectorBool.h"
+#include "Containers/Containers.h"
+#include "SmartPointers/SmartPointers.h"
