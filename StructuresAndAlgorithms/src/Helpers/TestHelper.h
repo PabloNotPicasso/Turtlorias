@@ -1,3 +1,5 @@
+#pragma once
+
 #include <gtest/gtest.h>
 
 class TestHelper {
@@ -75,4 +77,16 @@ public:
         ++TestHelper::moveAssignCnt;
         return *this;
     }
+};
+
+class BaseTest : public testing::Test {
+protected:
+    void SetUp() override
+    {
+        withDataDummy = Dummy("SomeOtherData");
+        TestHelper::reset();
+    }
+
+    Dummy uninitializedDummy;
+    Dummy withDataDummy;
 };

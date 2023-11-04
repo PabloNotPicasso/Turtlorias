@@ -1,9 +1,9 @@
+#include "Helpers/TestHelper.h"
 #include "Structures/STL/Containers/Array/Array.h"
-#include "TestHelper.h"
 
 using namespace Structures::STL;
 
-class ArrayCreationTest : public TestBase { };
+class ArrayCreationTest : public BaseTest { };
 
 TEST_F(ArrayCreationTest, creation)
 {

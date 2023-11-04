@@ -1,9 +1,9 @@
+#include "Helpers/TestHelper.h"
 #include "Structures/STL/Containers/List/List.h"
-#include "TestHelper.h"
 
 using namespace Structures::STL;
 
-class ListCreationTest : public ListTestBase { };
+class ListCreationTest : public BaseTest { };
 
 TEST_F(ListCreationTest, empty)
 {

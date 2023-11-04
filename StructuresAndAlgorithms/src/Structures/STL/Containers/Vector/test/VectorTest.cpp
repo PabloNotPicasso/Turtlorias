@@ -1,21 +1,11 @@
+#include "Helpers/TestHelper.h"
 #include "Structures/STL/Containers/Vector/Vector.h"
-#include "TestHelper.h"
 
 #include <gtest/gtest.h>
 
 using namespace Structures::STL;
 
-class VectorTest : public testing::Test {
-protected:
-    void SetUp() override
-    {
-        withDataDummy = Dummy("SomeOtherData");
-        TestHelper::reset();
-    }
-
-    Dummy uninitializedDummy;
-    Dummy withDataDummy;
-};
+class VectorTest : public BaseTest { };
 
 TEST_F(VectorTest, creation_empty)
 {

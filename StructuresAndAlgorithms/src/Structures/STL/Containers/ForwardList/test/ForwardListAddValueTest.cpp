@@ -1,9 +1,9 @@
+#include "Helpers/TestHelper.h"
 #include "Structures/STL/Containers/ForwardList/ForwardList.h"
-#include "TestHelper.h"
 
 using namespace Structures::STL;
 
-class ForwardListAddValueTest : public TestBase { };
+class ForwardListAddValueTest : public BaseTest { };
 
 TEST_F(ForwardListAddValueTest, push_front_copy)
 {

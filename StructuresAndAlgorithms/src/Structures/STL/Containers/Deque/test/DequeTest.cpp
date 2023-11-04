@@ -1,19 +1,9 @@
+#include "Helpers/TestHelper.h"
 #include "Structures/STL/Containers/Deque/Deque.h"
-#include "TestHelper.h"
 
 using namespace Structures::STL;
 
-class DequeTest : public testing::Test {
-protected:
-    void SetUp() override
-    {
-        withDataDummy = Dummy("SomeOtherData");
-        TestHelper::reset();
-    }
-
-    Dummy uninitializedDummy;
-    Dummy withDataDummy;
-};
+class DequeTest : public BaseTest { };
 
 TEST_F(DequeTest, creation_empty)
 {
