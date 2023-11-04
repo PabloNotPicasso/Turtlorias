@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Logger/LoggerApi.h"
-#include "iterator/ArrayIterator.h"
+#include "iterator/BaseRandomAccessIterator.h"
 
 namespace Structures::STL {
 
@@ -17,8 +17,8 @@ public:
     using const_reference = const T&;
     using size_type = size_t;
 
-    using iterator = ArrayIterator<T, NonConstTag>;
-    using const_iterator = ArrayIterator<T, ConstTag>;
+    using iterator = BaseRandomAccessIterator<T>;
+    using const_iterator = BaseRandomAccessIterator<const T>;
 
 public:
     constexpr Array() { }

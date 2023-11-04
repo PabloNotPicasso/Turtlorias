@@ -1,6 +1,12 @@
 #include <gtest/gtest.h>
 
+// clang-format off
+#include "BaseInputIteratorTest.cpp"
+#include "BaseForwardIteratorTest.cpp"
+#include "BaseBidirectionalIteratorTest.cpp"
+#include "BaseRandomAccessIteratorTest.cpp"
 #include "ArrayCreationTest.cpp"
+// clang-format on
 
 int main(int argc, char** argv)
 {

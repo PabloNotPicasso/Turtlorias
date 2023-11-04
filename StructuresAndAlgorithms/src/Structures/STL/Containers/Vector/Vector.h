@@ -356,12 +356,20 @@ public:
     {
         return _begin;
     }
+    const_iterator cbegin() const noexcept
+    {
+        return _begin;
+    }
 
     iterator end() noexcept
     {
         return _begin + _size;
     }
     const_iterator end() const noexcept
+    {
+        return _begin + _size;
+    }
+    const_iterator cend() const noexcept
     {
         return _begin + _size;
     }

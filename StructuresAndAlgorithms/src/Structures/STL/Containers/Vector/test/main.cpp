@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "VectorIteratorTest.cpp"
 #include "VectorTest.cpp"
 
 int main(int argc, char** argv)
