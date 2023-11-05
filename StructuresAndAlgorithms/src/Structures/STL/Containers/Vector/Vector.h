@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VectorHelper.h"
+#include "iterator/BaseRandomAccessIterator.h"
 
 namespace Structures::STL {
 
@@ -16,8 +17,8 @@ public:
     using const_reference = const T&;
     using size_type = size_t;
 
-    using iterator = pointer;
-    using const_iterator = const_pointer;
+    using iterator = BaseRandomAccessIterator<T>;
+    using const_iterator = BaseRandomAccessIterator<const T>;
 
     static constexpr size_t capacityMultiplier = 2U;
 
@@ -80,7 +81,7 @@ public:
 
         pointer toCreateIt = newArray;
         try {
-            for (auto ilIt = iList; ilIt != iList.end(); ++ilIt, ++toCreateIt) {
+            for (auto ilIt = iList.begin(); ilIt != iList.end(); ++ilIt, ++toCreateIt) {
                 new (toCreateIt) T(*ilIt);
             }
         } catch (...) {

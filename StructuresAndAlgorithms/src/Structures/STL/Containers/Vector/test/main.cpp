@@ -1,6 +1,12 @@
 #include <gtest/gtest.h>
 
+// clang-format off
+#include "VectorInputIteratorTest.cpp"
+#include "VectorForwardIteratorTest.cpp"
+#include "VectorBidirectionalIteratorTest.cpp"
+#include "VectorRandomAccessIteratorTest.cpp"
 #include "VectorTest.cpp"
+// clang-format on
 
 int main(int argc, char** argv)
 {
