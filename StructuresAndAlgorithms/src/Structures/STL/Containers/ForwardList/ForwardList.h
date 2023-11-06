@@ -22,8 +22,8 @@ public:
     using const_reference = const T&;
     using size_type = size_t;
 
-    using iterator = ForwardListIterator<T, NonConstTag>;
-    using const_iterator = ForwardListIterator<T, ConstTag>;
+    using iterator = ForwardListIterator<T, BaseNodeT, NodeT>;
+    using const_iterator = ForwardListIterator<const T, BaseNodeT, NodeT>;
 
 public:
     ForwardList() { }
@@ -200,8 +200,9 @@ public:
 private:
     iterator insertAfterNode(iterator insertAfterIt, NodeT* nodeToInsert)
     {
-        nodeToInsert->_next = insertAfterIt._node->_next;
-        insertAfterIt._node->_next = nodeToInsert;
+        auto insertAfterItNode = insertAfterIt._get_node();
+        nodeToInsert->_next = insertAfterItNode->_next;
+        insertAfterItNode->_next = nodeToInsert;
         return iterator(nodeToInsert);
     }
 
