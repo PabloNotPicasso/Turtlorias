@@ -22,8 +22,8 @@ public:
     using const_reference = const T&;
     using size_type = size_t;
 
-    using iterator = ListIterator<T, NonConstTag>;
-    using const_iterator = ListIterator<T, ConstTag>;
+    using iterator = ListIterator<T, BaseNode, Node>;
+    using const_iterator = ListIterator<const T, BaseNode, Node>;
 
 public:
     List()
@@ -188,11 +188,11 @@ public:
     }
     const_iterator end() const
     {
-        return const_iterator(&_head);
+        return const_iterator(const_cast<BaseNode*>(&_head));
     }
     const_iterator cend() const
     {
-        return const_iterator(&_head);
+        return const_iterator(const_cast<BaseNode*>(&_head));
     }
 
     /**
@@ -209,10 +209,11 @@ public:
 private:
     void insertNode(iterator toInsert, BaseNode* node)
     {
-        node->_previous = toInsert._node->_previous;
-        node->_next = toInsert._node;
+        auto toInsertNode = toInsert._get_node();
+        node->_previous = toInsertNode->_previous;
+        node->_next = toInsertNode;
         // toInsert update
-        toInsert._node->_previous = node;
+        toInsertNode->_previous = node;
         // previous element update
         node->_previous->_next = node;
 
