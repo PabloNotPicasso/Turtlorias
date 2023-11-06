@@ -167,3 +167,24 @@ TEST_F(DequeTest, pop_back)
         EXPECT_EQ(deque[i], i);
     }
 }
+
+TEST_F(DequeTest, forCycle)
+{
+    constexpr auto size = 1000;
+    Deque<size_t> deque(size, 0);
+    {
+        int i = 0;
+        for (auto& element : deque) {
+            element = i++;
+        }
+    }
+
+    for (int i = 0; i < size - 1; ++i) {
+        int j = i;
+        for (auto element : deque) {
+            EXPECT_EQ(element, j) << "Iteration " << i;
+            ++j;
+        }
+        deque.pop_front();
+    }
+}

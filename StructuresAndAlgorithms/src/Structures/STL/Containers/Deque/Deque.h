@@ -1,17 +1,18 @@
 #pragma once
 
 #include "DequeHelper.h"
+#include "DequeSize.h"
+#include "iterator/BaseRandomAccessIterator.h"
 
 namespace Structures::STL {
 
 template<typename T, typename Allocator = std::allocator<T>>
 class Deque {
 public:
-    static constexpr size_t BlockSize = 5;
     static constexpr size_t initialBlockCount = 3;
     static constexpr size_t initialBeginBlockIdx = initialBlockCount / 2;
 
-    using Helper = DequeHelper<T, BlockSize, Allocator>;
+    using Helper = DequeHelper<T, Allocator>;
 
     using value_type = T;
     using pointer = T*;
@@ -20,8 +21,8 @@ public:
     using const_reference = const T&;
     using size_type = size_t;
 
-    using iterator = pointer;
-    using const_iterator = const_pointer;
+    using iterator = BaseRandomAccessIterator<T>;
+    using const_iterator = BaseRandomAccessIterator<const T>;
 
 public:
     Deque()
@@ -122,26 +123,12 @@ public:
 
     void push_back(const value_type& value)
     {
-        useNextBlock();
-        Helper::constructElement(_blocks[_endBlockIdx] + _endOffset, value);
-        ++_endOffset;
-        if (_endOffset == BlockSize) {
-            _endOffset = 0;
-            ++_endBlockIdx;
-        }
-        ++_size;
+        emplace_back(value);
     }
 
     void push_back(value_type&& value)
     {
-        useNextBlock();
-        Helper::constructElement(_blocks[_endBlockIdx] + _endOffset, std::move(value));
-        ++_endOffset;
-        if (_endOffset == BlockSize) {
-            _endOffset = 0;
-            ++_endBlockIdx;
-        }
-        ++_size;
+        emplace_back(std::move(value));
     }
 
     template<typename... Args>
@@ -150,7 +137,7 @@ public:
         useNextBlock();
         Helper::constructElement(_blocks[_endBlockIdx] + _endOffset, std::forward<Args>(args)...);
         ++_endOffset;
-        if (_endOffset == BlockSize) {
+        if (_endOffset == DequeBlockSize) {
             _endOffset = 0;
             ++_endBlockIdx;
         }
@@ -164,23 +151,38 @@ public:
         }
         --_size;
         if (_endOffset == 0) {
-            _endOffset = BlockSize;
+            _endOffset = DequeBlockSize;
             --_endBlockIdx;
         }
         --_endOffset;
         Helper::destroyElement(_blocks[_endBlockIdx] + _endOffset);
     }
 
+    void pop_front()
+    {
+        if (empty()) {
+            throw "pop_back on empty deque";
+        }
+        --_size;
+
+        Helper::destroyElement(_blocks[_beginBlockIdx] + _beginOffset);
+        ++_beginOffset;
+        if (_beginOffset == DequeBlockSize) {
+            _beginOffset = 0;
+            ++_beginBlockIdx;
+        }
+    }
+
     reference operator[](size_type idx)
     {
         auto absoluteIdx = _beginOffset + idx;
-        return _blocks[_beginBlockIdx + absoluteIdx / BlockSize][absoluteIdx % BlockSize];
+        return _blocks[_beginBlockIdx + absoluteIdx / DequeBlockSize][absoluteIdx % DequeBlockSize];
     }
 
     const_reference operator[](size_type idx) const
     {
         auto absoluteIdx = _beginOffset + idx;
-        return _blocks[absoluteIdx / BlockSize][absoluteIdx % BlockSize];
+        return _blocks[_beginBlockIdx + absoluteIdx / DequeBlockSize][absoluteIdx % DequeBlockSize];
     }
 
     reference at(size_type idx)
@@ -207,6 +209,15 @@ public:
         return at(_size - 1);
     }
 
+    reference front()
+    {
+        return at(0);
+    }
+    const_reference front() const
+    {
+        return at(0);
+    }
+
     bool empty() const noexcept
     {
         return _size == 0;
@@ -215,6 +226,32 @@ public:
     size_type size() const noexcept
     {
         return _size;
+    }
+
+    iterator begin()
+    {
+        return iterator(_blocks + _beginBlockIdx, _beginOffset);
+    }
+    const_iterator begin() const
+    {
+        return const_iterator(_blocks + _beginBlockIdx, _beginOffset);
+    }
+    const_iterator cbegin() const
+    {
+        return const_iterator(_blocks + _beginBlockIdx, _beginOffset);
+    }
+
+    iterator end()
+    {
+        return iterator(_blocks + _endBlockIdx, _endOffset);
+    }
+    const_iterator end() const
+    {
+        return const_iterator(_blocks + _endBlockIdx, _endOffset);
+    }
+    const_iterator cend() const
+    {
+        return const_iterator(_blocks + _endBlockIdx, _endOffset);
     }
 
     /**

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "DequeSize.h"
+
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
@@ -10,7 +12,6 @@ namespace Structures::STL {
 
 template<
     typename T,
-    size_t BlockSize,
     typename Allocator = std::allocator<T>,
     typename AllocatorPtr = std::allocator<T*>>
 class DequeHelper {
@@ -68,13 +69,13 @@ public:
     [[nodiscard]] static T* createBlock()
     {
         Allocator allocator;
-        return allocator.allocate(BlockSize);
+        return allocator.allocate(DequeBlockSize);
     }
 
     static void freeBlock(T* block)
     {
         Allocator allocator;
-        return allocator.deallocate(block, BlockSize);
+        return allocator.deallocate(block, DequeBlockSize);
     }
 
     template<typename... Args>
@@ -96,7 +97,7 @@ public:
         size_t elementIdx = 0;
         size_t elementIdxInsideBlock = beginOffset;
         for (size_t blockIdx = beginIdx; blockIdx <= endIdx; ++blockIdx) {
-            for (; elementIdxInsideBlock != BlockSize && elementIdx != size;
+            for (; elementIdxInsideBlock != DequeBlockSize && elementIdx != size;
                  ++elementIdxInsideBlock, ++elementIdx) {
                 destroyElement(source[blockIdx] + elementIdxInsideBlock);
             }
@@ -117,13 +118,13 @@ public:
     [[nodiscard]] static T** copyBlocksArray(
         const T** const source, size_t size, size_t beginIdx, size_t endIdx, size_t beginOffset)
     {
-        assert(beginOffset < BlockSize);
+        assert(beginOffset < DequeBlockSize);
         T** blocks = createBlocksArray(size);
 
         size_t elementIdx = 0;
         size_t elementIdxInsideBlock = beginOffset;
         for (size_t blockIdx = beginIdx; blockIdx <= endIdx; ++blockIdx) {
-            for (; elementIdxInsideBlock != BlockSize && elementIdx != size;
+            for (; elementIdxInsideBlock != DequeBlockSize && elementIdx != size;
                  ++elementIdxInsideBlock, ++elementIdx) {
                 constructElement(
                     blocks[blockIdx] + elementIdxInsideBlock,
@@ -160,7 +161,7 @@ public:
         size_t elementIdx = 0;
         size_t elementIdxInsideBlock = beginOffset;
         for (size_t blockIdx = beginIdx; blockIdx <= endIdx; ++blockIdx) {
-            for (; elementIdxInsideBlock != BlockSize && elementIdx != size;
+            for (; elementIdxInsideBlock != DequeBlockSize && elementIdx != size;
                  ++elementIdxInsideBlock, ++elementIdx) {
                 destroyElement(source[blockIdx] + elementIdxInsideBlock);
             }
