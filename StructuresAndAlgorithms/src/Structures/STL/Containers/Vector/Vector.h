@@ -189,55 +189,14 @@ public:
 
     void push_back(const value_type& value)
     {
-        if (_size < _capacity) {
-            // We can skip try-catch here
-            Helper::constructElement(_begin + _size, value);
-            ++_size;
-            return;
-        }
-
-        size_type newCapacity = _capacity * capacityMultiplier;
-        auto newArr = Helper::makeExtendedCopy(_begin, _size, newCapacity);
-
-        try {
-            // Add new element
-            Helper::constructElement(newArr + _size, value);
-        } catch (...) {
-            Helper::deleteAndFree(newArr, newCapacity, _size);
-            throw;
-        }
-        Helper::deleteAndFree(_begin, _capacity, _size);
-        _begin = newArr;
-        ++_size;
-        _capacity = newCapacity;
+        emplace_back(value);
     }
     void push_back(value_type&& value)
     {
-        if (_size < _capacity) {
-            // We can skip try-catch here
-            Helper::constructElement(_begin + _size, std::move(value));
-            ++_size;
-            return;
-        }
-
-        size_type newCapacity = _capacity * capacityMultiplier;
-        auto newArr = Helper::makeExtendedCopy(_begin, _size, newCapacity);
-
-        try {
-            // Add new element
-            Helper::constructElement(newArr + _size, std::move(value));
-        } catch (...) {
-            Helper::deleteAndFree(newArr, newCapacity, _size);
-            throw;
-        }
-        Helper::deleteAndFree(_begin, _capacity, _size);
-        _begin = newArr;
-        ++_size;
-        _capacity = newCapacity;
+        emplace_back(std::move(value));
     }
-
     template<typename... Args>
-    void emplace_back(Args... args)
+    void emplace_back(Args&&... args)
     {
         if (_size < _capacity) {
             Helper::constructElement(_begin + _size, std::forward<Args>(args)...);
@@ -373,6 +332,13 @@ public:
     const_iterator cend() const noexcept
     {
         return _begin + _size;
+    }
+
+    pointer data() {
+        return _begin;
+    }
+    const pointer data() const {
+        return _begin;
     }
 
     /**
