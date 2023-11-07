@@ -8,9 +8,12 @@ RUN apt-get update -y && apt-get upgrade -y && \
     clang-format \
     clang-tidy \
     python3 python3-pip python3-setuptools python3-wheel \
-    libboost-dev libboost-program-options-dev libboost-log-dev
+    libboost-dev libboost-program-options-dev libboost-log-dev \
+    lcov
 
 RUN pip install cmake_format
+RUN pip install gcovr
+RUN pip install lcov_cobertura
 
 RUN apt-get update -y && apt-get upgrade -y
 
