@@ -1,73 +1,80 @@
 #pragma once
 
-#include <cstddef>
-#include <cstdint>
-#include <vector>
+#include "Structures/STL/Containers/Vector/Vector.h"
+#include "BitController.h"
 
 namespace Structures::STL {
 
-class VectorBool {
-private:
-    using byte = int8_t;
-    class BitController {
-    public:
-        BitController(const size_t globalIndex, byte& byteRef);
+template<>
+class Vector<bool> : public Vector<char> {
+public:
+    using byte = char;
 
-        BitController& operator=(const BitController& bc);
-        BitController& operator=(bool value);
+    using value_type = bool;
+    using reference = BitController<byte>;
+    using const_reference = const BitController<const byte>;
+    using size_type = size_t;
 
-        operator bool() const;
+    using pointer = bool*;
+    using const_pointer = const bool*;
 
-    protected:
-        bool getBit() const;
-        void setBit(const bool newValue);
-
-    private:
-        const size_t m_index;
-        byte& m_byte;
-    };
+    using iterator = BaseRandomAccessIterator<reference>;
+    using const_iterator = BaseRandomAccessIterator<const_reference>;
 
 public:
-    /**
-     * @brief Will create vector which support at least \p size boolean variables
-     */
-    VectorBool(const size_t size = 0);
+    Vector();
+    explicit Vector(size_type count);
+    Vector(size_type count, const value_type& value);
+    Vector(const Vector& toCopy);
+    Vector(Vector&& toMove);
+    explicit Vector(std::initializer_list<bool> iList);
+    Vector& operator=(const Vector& toCopy);
+    Vector& operator=(Vector&& toMove);
+    Vector& operator=(std::initializer_list<bool> iList);
+    ~Vector();
 
-    /**
-     * @brief Will create vector using initializer list values
-     */
-    VectorBool(std::initializer_list<bool> list);
+    void reserve(size_type newCapacity);
+    void resize(size_type newSize);
+    void resize(size_type newSize, const value_type& value);
 
-    /**
-     * @brief Returns modifieble BitController by \p index
-     */
-    BitController operator[](const size_t index);
+    void push_back(const value_type& value);
+    void push_back(value_type&& value);
+    template<typename... Args>
+    void emplace_back(Args... args);
 
-    const BitController operator[](const size_t index) const;
+    void pop_back();
 
-    /**
-     * @brief Returns capacity of allocated storage
-     */
-    size_t capacity() const;
+    void insert(size_type idx, const value_type& value);
 
-    /**
-     * @brief Returns container size
-     */
-    size_t size() const;
+    reference operator[](size_type idx);
+    const_reference operator[](size_type idx) const;
+    reference at(size_type idx);
+    const_reference at(size_type idx) const;
+    reference back();
+    const_reference back() const;
+    bool empty() const noexcept;
+    size_type size() const noexcept;
+    size_type capacity() const noexcept;
+    iterator begin() noexcept;
+    const_iterator begin() const noexcept;
+    const_iterator cbegin() const noexcept;
 
-    /**
-     * @brief Push new value to storage
-     */
-    void push_back(const bool newValue);
+    iterator end() noexcept;
+    const_iterator end() const noexcept;
+    const_iterator cend() const noexcept;
+    pointer data();
+    const pointer data() const;
+
+    void clear();
+    void shrink_to_fit();
+
+    void swap(Vector& toSwap) noexcept;
 
 protected:
     void extend();
 
-    byte& getByteRef(const size_t index) const;
-
-private:
-    mutable std::vector<byte> m_array;
-    size_t m_size;
+    byte* getBytePtr(const size_t index);
+    const byte* getBytePtr(const size_t index) const;
 };
 
 } // namespace Structures::STL
