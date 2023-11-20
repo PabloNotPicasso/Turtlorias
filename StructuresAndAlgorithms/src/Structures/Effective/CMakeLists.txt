@@ -1,4 +1,4 @@
-add_structure(BigInteger)
-add_structure(Mediator)
-add_structure(MinQueue)
-add_structure(SegmentAccumulator)
+add_structure(TARGET BigInteger)
+add_structure(TARGET Mediator)
+add_structure(TARGET MinQueue)
+add_structure(TARGET SegmentAccumulator)

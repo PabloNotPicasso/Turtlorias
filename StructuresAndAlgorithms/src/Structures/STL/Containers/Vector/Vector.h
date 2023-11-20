@@ -334,10 +334,12 @@ public:
         return _begin + _size;
     }
 
-    pointer data() {
+    pointer data()
+    {
         return _begin;
     }
-    const pointer data() const {
+    const pointer data() const
+    {
         return _begin;
     }
 

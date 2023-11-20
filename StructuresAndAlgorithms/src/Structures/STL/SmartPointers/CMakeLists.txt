@@ -1,1 +1,1 @@
-add_structure(SharedPointer)
+add_structure(TARGET SharedPointer)
