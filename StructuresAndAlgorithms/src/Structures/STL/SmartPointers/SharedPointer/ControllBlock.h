@@ -7,27 +7,29 @@ namespace Structures::STL {
 
 class ControllBlock {
 public:
-    ControllBlock()
-        : m_counter(0)
-    {
-    }
+    ControllBlock() = default;
 
-    void increment()
+    inline void increment()
     {
         ++m_counter;
     }
-    void decrement()
+    inline void decrement()
     {
         assert(m_counter);
         --m_counter;
     }
-    bool isZero() const
+    inline bool isZero() const
     {
         return !m_counter;
     }
 
+    inline size_t counter() const
+    {
+        return m_counter;
+    }
+
 private:
-    size_t m_counter;
+    size_t m_counter = 0;
 };
 
 } // namespace Structures::STL
