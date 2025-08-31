@@ -6,8 +6,7 @@
 using namespace Structures::STL;
 
 template<typename IteratorType>
-class BaseForwardIteratorTest : public BaseTest {
-};
+class BaseForwardIteratorTest : public BaseTest { };
 
 using ForwardIteratorTypes = testing::
     Types<BaseForwardIterator<int>, BaseBidirectionalIterator<int>, BaseRandomAccessIterator<int>>;

@@ -13,7 +13,9 @@ if(ENABLE_LOGS)
     add_feature_info(LOG_SHOW_TIMESTAMP LOG_SHOW_TIMESTAMP "enables timestamps in logs")
 
     option(LOG_SHOW_FUNCTION_NAME "Enable function enter-leave logs" ON)
-    add_feature_info(LOG_SHOW_FUNCTION_NAME LOG_SHOW_FUNCTION_NAME "enables function enter-leave logs")
+    add_feature_info(
+        LOG_SHOW_FUNCTION_NAME LOG_SHOW_FUNCTION_NAME "enables function enter-leave logs"
+    )
 endif()
 
 feature_summary(WHAT ALL)

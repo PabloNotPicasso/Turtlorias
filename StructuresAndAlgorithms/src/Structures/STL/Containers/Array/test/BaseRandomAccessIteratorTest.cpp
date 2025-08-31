@@ -4,8 +4,7 @@
 using namespace Structures::STL;
 
 template<typename IteratorType>
-class BaseRandomAccessIteratorTest : public BaseTest {
-};
+class BaseRandomAccessIteratorTest : public BaseTest { };
 
 using RandomAccessIteratorTypes = testing::Types<BaseRandomAccessIterator<int>>;
 

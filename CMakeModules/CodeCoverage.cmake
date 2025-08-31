@@ -30,7 +30,7 @@ function(setup_coverage_target)
     set(COVERAGE_CLEAN coverage-clean)
     set(COVERAGE_TEST coverage-test)
     set(COVERAGE_TARGET coverage)
-    
+
     set(COVERAGE_OUTPUT_DIRECTORY coverage_results)
     set(GRAFANA_OUTPUT_NAME "coverage_results.txt")
 
@@ -75,7 +75,7 @@ function(setup_coverage_target)
     list(TRANSFORM GCOVR_EXCLUDED_FILES PREPEND "--exclude;")
 
     set(GCOVR_PARAMS --root ${CMAKE_CURRENT_SOURCE_DIR} --print-summary
-                        ${COVERAGE_EXTRACT_FOR_GCOVR} ${GCOVR_EXCLUDED_FILES}
+                     ${COVERAGE_EXTRACT_FOR_GCOVR} ${GCOVR_EXCLUDED_FILES}
     )
 
     add_custom_target(
@@ -85,16 +85,16 @@ function(setup_coverage_target)
                 # Cleanup generated code coverage of grafana
         COMMAND ${CMAKE_COMMAND} -E remove ${GRAFANA_OUTPUT_NAME}
                 # Create baseline to make sure untouched files show up in the report
-        COMMAND
-            ${LCOV_PATH} ${LCOV_OPTIONS} --capture --no-external --initial ${LCOV_DIRS}
-            --output-file coverage.base.info
+        COMMAND ${LCOV_PATH} ${LCOV_OPTIONS} --capture --no-external --initial ${LCOV_DIRS}
+                --output-file coverage.base.info
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         VERBATIM
         COMMENT "Clean coverage"
     )
 
     add_custom_target(
-        ${COVERAGE_TEST} COMMAND ${CMAKE_CTEST_COMMAND} --extra-verbose --output-on-failure --stop-on-failure
+        ${COVERAGE_TEST}
+        COMMAND ${CMAKE_CTEST_COMMAND} --extra-verbose --output-on-failure --stop-on-failure
         COMMENT "Executing tests for coverage"
     )
 
@@ -105,12 +105,10 @@ function(setup_coverage_target)
             ${LCOV_PATH} ${LCOV_OPTIONS} --capture --no-external ${LCOV_DIRS} --output-file
             coverage.run.info
             # add baseline counters
-        COMMAND
-            ${LCOV_PATH} ${LCOV_OPTIONS} --add-tracefile coverage.base.info --add-tracefile
-            coverage.run.info --output-file coverage.total.info
-        COMMAND
-            ${LCOV_PATH} ${LCOV_OPTIONS} --remove coverage.total.info
-            ${COVERAGE_EXCLUDE_PATTERN} --output-file coverage.info
+        COMMAND ${LCOV_PATH} ${LCOV_OPTIONS} --add-tracefile coverage.base.info --add-tracefile
+                coverage.run.info --output-file coverage.total.info
+        COMMAND ${LCOV_PATH} ${LCOV_OPTIONS} --remove coverage.total.info
+                ${COVERAGE_EXCLUDE_PATTERN} --output-file coverage.info
         COMMAND
             ${GENHTML_PATH} --title ${PROJECT_NAME} --prefix ${PROJECT_SOURCE_DIR} --rc
             genhtml_branch_coverage=1 --demangle-cpp --quiet --output-directory
@@ -125,10 +123,8 @@ function(setup_coverage_target)
         COMMENT "Processing code coverage counters and generating report."
     )
 
-
     add_dependencies(${COVERAGE_TEST} ${COVERAGE_CLEAN})
     add_dependencies(${COVERAGE_TARGET} ${COVERAGE_TEST})
 endfunction()
 
-setup_coverage_target(
-    EXTRACT_FOR_GCOVR "${PROJECT_SOURCE_DIR}/src" )
+setup_coverage_target(EXTRACT_FOR_GCOVR "${PROJECT_SOURCE_DIR}/src")

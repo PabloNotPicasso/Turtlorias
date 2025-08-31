@@ -6,7 +6,8 @@ using namespace Structures::STL;
 
 class Dummy {
 public:
-    void f() {
+    void f()
+    {
         ++cnt;
     }
     int cnt = 0;

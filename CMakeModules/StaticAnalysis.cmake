@@ -27,7 +27,7 @@ add_custom_command(
         # Enabled checks
         --enable=warning,performance,portability,information,missingInclude --language=c++ --xml
         --xml-version=2
-        # Error to supress
+        # Error to suppress
         --inline-suppr
         # Suppression list
         --suppressions-list=${CMAKE_BINARY_DIR}/cppcheck-suppressions.txt

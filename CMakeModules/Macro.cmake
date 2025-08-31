@@ -39,7 +39,10 @@ function(build_test)
     elseif(EXISTS ${SingleTest})
         set(TEST_SRC ${SingleTest})
     else()
-        message(FATAL_ERROR "There is no tests for ${SingleTest}. MainTest = ${MainTest}. SingleTest = ${SingleTest}")
+        message(
+            FATAL_ERROR
+                "There is no tests for ${SingleTest}. MainTest = ${MainTest}. SingleTest = ${SingleTest}"
+        )
     endif()
 
     message(STATUS "test:")
@@ -50,8 +53,6 @@ function(build_test)
 
     add_gtest_test(${TARGET}_test ${TEST_SRC} ${TARGET})
 endfunction()
-
-
 
 function(add_structure)
 
@@ -65,7 +66,7 @@ function(add_structure)
     if(NOT PARSED_TARGET)
         message(FATAL_ERROR "Missing required argument: TARGET")
     endif()
-    
+
     message(STATUS "Add structure \'${TARGET}\':")
 
     list(APPEND CMAKE_MESSAGE_INDENT "   ")

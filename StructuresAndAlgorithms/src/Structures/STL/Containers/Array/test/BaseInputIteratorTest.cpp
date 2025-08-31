@@ -7,8 +7,7 @@
 using namespace Structures::STL;
 
 template<typename IteratorType>
-class BaseInputIteratorTest : public BaseTest {
-};
+class BaseInputIteratorTest : public BaseTest { };
 
 using InputIteratorTypes = testing::Types<
     BaseInputIterator<int>,
