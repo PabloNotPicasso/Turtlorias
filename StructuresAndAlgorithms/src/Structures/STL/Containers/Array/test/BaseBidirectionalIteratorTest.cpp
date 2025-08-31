@@ -5,8 +5,7 @@
 using namespace Structures::STL;
 
 template<typename IteratorType>
-class BaseBidirectionalIteratorTest : public BaseTest {
-};
+class BaseBidirectionalIteratorTest : public BaseTest { };
 
 using BidirectionalIteratorTypes
     = testing::Types<BaseBidirectionalIterator<int>, BaseRandomAccessIterator<int>>;

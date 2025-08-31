@@ -179,9 +179,9 @@ public:
 
     void norm()
     {
-        auto lenght = len();
-        x /= lenght;
-        y /= lenght;
+        auto length = len();
+        x /= length;
+        y /= length;
     }
 
     double len() const
