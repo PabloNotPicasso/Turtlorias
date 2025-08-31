@@ -1,31 +1,35 @@
 FROM ubuntu:latest
 
 RUN apt-get update -y && apt-get upgrade -y && \
-    apt-get install -y \
-    cmake \
-    git \
-    cppcheck \
-    clang-format \
-    clang-tidy \
-    python3 python3-pip python3-setuptools python3-wheel \
-    libboost-dev libboost-program-options-dev libboost-log-dev \
-    lcov
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ca-certificates \
+        build-essential \
+        cmake \
+        git \
+        cppcheck \
+        clang-format \
+        clang-tidy \
+        python3 python3-pip python3-setuptools python3-wheel python3-venv \
+        pipx \
+        libboost-dev libboost-program-options-dev libboost-log-dev \
+        lcov && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN pip install cmake_format
-RUN pip install gcovr
-RUN pip install lcov_cobertura
+ENV PIPX_HOME=/usr/local/pipx \
+    PIPX_BIN_DIR=/usr/local/bin
+ENV PATH="${PIPX_BIN_DIR}:${PATH}"
 
-RUN apt-get update -y && apt-get upgrade -y
+RUN pipx install "cmakelang==0.6.13" \
+ && pipx install "gcovr==7.2" \
+ && pipx install "lcov_cobertura==2.0"
 
 ###########################
 # GTest
-RUN git clone https://github.com/google/googletest.git -b release-1.11.0
-RUN cd googletest && \
-    mkdir build && \
-    cd build && \
-    cmake .. && \
-    make && \
-    make install
+RUN git clone --depth 1 -b release-1.11.0 https://github.com/google/googletest.git /tmp/googletest && \
+    cmake -S /tmp/googletest -B /tmp/googletest/build -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build /tmp/googletest/build -j && \
+    cmake --install /tmp/googletest/build && \
+    rm -rf /tmp/googletest
 
 ###########################
 # Adding User
@@ -35,6 +39,6 @@ ARG USERNAME=turtorias_user
 ARG USERGROUP=turtorias_group
 
 RUN groupadd -o -g ${GROUPID} ${USERGROUP} \
-  && useradd -o --no-log-init -m -u ${USERID} -g ${USERGROUP} ${USERNAME}
+ && useradd -o --no-log-init -m -u ${USERID} -g ${USERGROUP} ${USERNAME}
 
 USER ${USERNAME}
